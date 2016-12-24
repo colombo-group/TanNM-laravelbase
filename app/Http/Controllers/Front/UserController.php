@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\user;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
-
+use App\Http\Controllers\Controller;
 
 /**
  *@author nguyenminhtan<nguyenminhtan893@gmail.com>

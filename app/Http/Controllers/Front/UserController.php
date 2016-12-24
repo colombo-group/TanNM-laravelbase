@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Front;
 
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use Auth;
 
 /**
  *@author nguyenminhtan<nguyenminhtan893@gmail.com>
@@ -13,6 +14,36 @@ use App\Http\Controllers\Controller;
  */
 class UserController extends Controller
 {
+
+    /**
+      * hàm login bằng username hoặc email  
+     */
+    public function login(Request $request){
+
+        //Kiểm tra email hay username
+        $name  = $request->input('name');
+        if(preg_match('/[@]/', $name)){//email
+
+            if(Auth::attempt(['email' => $name,'password' => $request->input('password')])){
+                return redirect()->route('home');
+            }
+            else{
+                return redirect()->route('login')->withErrors(['login'=>'Tên đăng nhập (email) hoặc mật khẩu nhập không đúng!']);
+            }
+        }else{///username
+
+            if(Auth::attempt(['username' => $name,'password' => $request->input('password')])){
+            return redirect()->route('home');
+        }
+        else{
+            return redirect()->route('login')->withErrors(['login'=>'Tên đăng nhập (email) hoặc mật khẩu nhập không đúng!']);
+        }
+
+    }
+
+}
+
+
     /**
      * hàm hiển thị profile user
     */
@@ -53,10 +84,10 @@ class UserController extends Controller
     	$user = user::find($id);
     	if($user != null){
     		$validate =  Validator::make($request->all(), [
-       			'name' => 'required|max:255',
-        		'email' => 'required|email|unique:users,email,'.$user->id,
-        		'sex'=>'required'
-    		]);
+              'name' => 'required|max:255',
+              'email' => 'required|email|unique:users,email,'.$user->id,
+              'sex'=>'required'
+              ]);
 
     		if($validate->fails()){
     			return redirect()->route('user.update',$user->id)->withErrors($validate);

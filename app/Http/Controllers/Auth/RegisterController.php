@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -48,12 +48,14 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         $messsages = array(
+                'username.unique'=>'Username đã tồn tại!',
                 'email.required'=>'Bạn phải nhập đầy đủ email',
                 'name.required'=>'Bạn phải nhập đầy đủ tên',
                 'email.unique' =>'Email đã tồn tại!'
          );
 
         $rules = array(
+            'username'=>'required|max:255|unique:users',
             'email'=>'required|max:255|email|unique:users',
             'name'=>'required|max:255',
             'password'=>'required|min:6|confirmed'
@@ -75,10 +77,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'birthday'=>'',
-            'slogan'=>'',
-            'sex'=>'',
-            'address'=>''
+            'username' =>$data['username']
         ]);
     }
 }

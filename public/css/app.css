@@ -6639,11 +6639,11 @@ a.text-gray-dark:focus, a.text-gray-dark:hover {
 
 .header {
   width: 100%;
-  background: #F7F7F9;
+  background: #0275D8;
 }
 
 .content {
-  margin-top: 70px;
+  margin-top: 40px;
 }
 
 /*# sourceMappingURL=app.css.map */

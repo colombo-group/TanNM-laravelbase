@@ -9,42 +9,41 @@
 </head>
 <body>
 	<div class="header">
+
 		<div class="container">
-			<div class="col-xs-12">
-				<nav class="navbar navbar-light bg-faded ">
-					<a class="navbar-brand" href="/">Trainee Blog Admin</a>
-					<div class="float-xs-right">
-					@if(Auth::check())
-						<ul class="nav nav-pills">
-						<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="javascript:;" role="button" aria-haspopup="true" aria-expanded="false">
-							@if(Auth::user()->level ==4)
+			<nav class="navbar navbar-dark bg-primary">
+
+				<!-- Brand -->
+				<a class="navbar-brand" href="#">Tranee blog</a>
+
+				<!-- Links -->
+				<ul class="nav navbar-nav float-xs-right">
+					@yield('nav-item')
+				<!-- 	<li class="nav-item">
+					<a class="nav-link" href="#" >Pages</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">User</a>
+					</li> -->
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
 							Admin
-							@else
-							{{ Auth::user()->name }}
-							@endif
 						</a>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" href="{{ route('user.profile',Auth::user()->id) }}">Profile</a>
-								<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-						document.getElementById('logout-form').submit();">Đăng xuất</a>
-						<form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-						{{ csrf_field() }}
-					</form>
-							</div>
-						</li>	
-						</ul>
-					@else
-					<a href="{{ route('login') }}" class='btn btn-primary btn-sm'>Đăng nhập</a>
-					<a href="{{ route('register') }}" class='btn btn-secondary btn-sm'>Đăng ký</a>
-					@endif
-			</div>		
-		</nav>
+						<div class="dropdown-menu" aria-labelledby="Preview">
+							<a class="dropdown-item" href="{{ route('user.profile',Auth::user()->id) }}">Profile</a>
+							<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+							document.getElementById('logout-form').submit();">Đăng xuất</a>
+							<form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+								{{ csrf_field() }}
+							</form>
+						</div>
+					</li>
+				</ul>
+			</nav>
+		</div>	
+	</div>	
+	<div class="container">
+		@yield('content')
 	</div>
-</div>		
-</div>
-<div class="container">
-	@yield('content')
-</div>
 </body>
 </html>

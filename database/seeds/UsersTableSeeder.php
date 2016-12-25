@@ -18,10 +18,11 @@ class UsersTableSeeder extends Seeder
         for ($i = 0; $i < $limit; $i++) {
             DB::table('users')->insert([ //,
                 'name' => $faker->name,
+                'username'=>$faker->name,
                 'email' => $faker->unique()->email,
-                'password'=>bcrypt($faker->text($maxNbChars = 8)),
+                'password'=>bcrypt('123456'),
                 'address' => $faker->address,
-                'sex'=>'girl',
+                'sex'=>'',
                 'birthday'=>$faker->date($format = 'Y-m-d', $max = 'now'),
                 'slogan'=>$faker->text($maxNbChars = 200) 
             ]);

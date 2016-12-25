@@ -23,7 +23,7 @@
 			</tr>
 			<tr>
 				<td>Ngày sinh</td>
-				<td>{{ substr($user->birthday , 0 ,10) }}</td>
+				<td>@if($user->birthday!=null){{ substr($user->birthday , 0 ,10) }}@endif</td>
 			</tr>
 			<tr>
 				<td>Địa chỉ</td>

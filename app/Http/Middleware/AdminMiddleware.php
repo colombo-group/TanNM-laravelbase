@@ -17,7 +17,7 @@ class AdminMiddleware
     public function handle($request, Closure $next)
     {
         if(Auth::check()){
-            if(Auth::user()->level == 4){
+            if(Auth::user()->level == 0){
                 return $next($request);
             }
             else{

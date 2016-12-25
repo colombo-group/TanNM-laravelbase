@@ -29,7 +29,7 @@ class HomeController extends Controller
         if(Auth::check()){
             $user = Auth::user();
 
-            if($user->level ==4){
+            if($user->level ==0){
                 return redirect('/admin');
             }
             else{

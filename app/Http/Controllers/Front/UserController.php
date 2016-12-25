@@ -85,7 +85,6 @@ class UserController extends Controller
     	if($user != null){
     		$validate =  Validator::make($request->all(), [
               'name' => 'required|max:255',
-              'email' => 'required|email|unique:users,email,'.$user->id,
               'sex'=>'required'
               ]);
 
@@ -93,7 +92,6 @@ class UserController extends Controller
     			return redirect()->route('user.update',$user->id)->withErrors($validate);
     		}else{
     			$user->name= $request->input('name');
-    			$user->email= $request->input('email');
     			$user->birthday= $request->input('birthday');
     			$user->address= $request->input('address');
     			$user->slogan= $request->input('slogan');

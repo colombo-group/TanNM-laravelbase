@@ -4,56 +4,61 @@
 @endsection
 
 @section('content')
-<div class="content">
+<div class=" container content">
 	<h2 class="display-2">Cập nhật profile</h2>
-	{!! Form::open(['route' => ['user.save', $user->id] ,'method'=>'post'	 ,'class'=>'form-group']) !!}
-  	{{ Form::token() }}  
-	{{ Form::label('name', 'Họ tên') }}	
-	{{ Form::text('name' , $user->name , ['class'=>'form-control']) }}
-  <br>
-	{{ Form::label('email', 'Email', ['class' => 'awesome']) }}	
-	{{ Form::email('email' , $user->email , ['class'=>'form-control']) }}
-	 @if ($errors->has('email'))
-        <span class="help-block">
-                         <strong>{{ $errors->first('email') }}</strong>
-                                    </span><br/>
-                                @endif
-                                <br>
-	{{ Form::label('sex', 'Giới tính', ['class' => 'awesome']) }}	
-	<fieldset class="form-group">
-    <div class="form-check">
-      <label class="form-check-label">
-      @if($user->sex=='boy')
-        <input type="radio" class="form-check-input" name="sex" id="optionsRadios1" value="boy" checked>Boy
-       @else
-        <input type="radio" class="form-check-input" name="sex" id="optionsRadios1" value="boy" >
-        Boy
-        @endif
-      </label>
+	
+  <form action="{{ route('user.save', $user->id) }}" method="POST">
+  {{ csrf_field() }}
+    <div class="form-group">
+      <label for="name">Họ tên</label>
+      <input type="text" class="form-control" id='name' name='name' value="{{ $user->name }}">
+    </div> 
+
+    <div class="form-group">
+      <label for="name">Giới tính</label>
+      <fieldset class="form-group">
+        <div class="form-check">
+          <label class="form-check-label">
+            @if($user->sex!=null && $user->sex=='boy')
+            <input type="radio" class="form-check-input" name="sex" id="boy" value="boy" checked>
+            @else
+            <input type="radio" class="form-check-input" name="sex" id="boy" value="boy" >
+            @endif
+            Boy
+          </label>
+        </div>
+        <div class="form-check ">
+          <label class="form-check-label">
+            @if($user->sex!=null && $user->sex=='girl')
+            <input type="radio" class="form-check-input" name="sex" id="boy" value="girl" checked>
+            @else
+            <input type="radio" class="form-check-input" name="sex" id="girl" value="girl" >
+            @endif
+            Girl
+          </label>
+        </div>
+      </fieldset>
     </div>
-    <div class="form-check">
-    <label class="form-check-label">
-        @if($user->sex=='girl')
-        <input type="radio" class="form-check-input" name="sex" id="optionsRadios1" value="girl" checked>
-        Girl
-       @else
-        <input type="radio" class="form-check-input" name="sex" id="optionsRadios1" value="girl" >
-        Girl
-        @endif
-      </label>
-    </div>	
-  </fieldset>
-<br>
-	{{ Form::label('birthday', 'Ngày sinh', ['class' => 'awesome']) }}	
-	{{ Form::date('birthday' , $user->birthday->format('Y-m-d') , ['class'=>'form-control']) }}
-  <br>
-	{{ Form::label('address', 'Địa chỉ', ['class' => 'awesome']) }}	
-	{{ Form::text('address' , $user->address , ['class'=>'form-control']) }}
-  <br>
-  {{ Form::label('slogan', 'Solgan', ['class' => 'awesome']) }}	
-	{{ Form::textarea('slogan' , $user->slogan , ['class'=>'form-control']) }}
-  <br>
-	{{ Form::submit('Cập nhật', ['class'=>'btn btn-success']) }}
-	{!! Form::close() !!}
+
+    
+
+    <div class="form-group">
+      <label for="name">Ngày sinh</label>
+      <input type="date" class="form-control" id='date' name='birthday' value="<?php if($user->birthday!=null){ echo $user->birthday->format('Y-m-d'); }?>">
+    </div> 
+
+    <div class="form-group">
+      <label for="address">Địa chỉ</label>
+      <input type="text" class="form-control" id='address' name='address' value="{{ $user->address }}">
+    </div> 
+
+    <div class="form-group">
+      <label for="slogan">Slogan</label>
+      <input type="text" class="form-control" id='slogan' name='slogan' value="{{ $user->slogan }}">
+    </div>
+    <br/>
+    <button type="submit" class='btn btn-success'>Cập nhật</button>
+  </form>
+
 </div>
 @endsection

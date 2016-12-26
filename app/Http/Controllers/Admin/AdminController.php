@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use Auth;
 
 /**
  * lớp làm việc với admin
@@ -17,19 +18,41 @@ class AdminController extends Controller
      *@return view của trng admin
 	*/
     public function index(Request $request){
-    	$request->session()->flash('status', 'Task was successful!');
-    	$users = User::paginate(2);
-    	return view('admin/index')->with('users',$users);
+    	return redirect()->route('post.index');
     }
 
     /**
-	 * hàm hiển thị view của trang thêm post
-	 *@return view trang thêm post
-    */
-    public function addPost(){
-    	return view('admin.addPost');
+     *show login
+     */
+    public function showLogin(){
+    	return view('admin.login');
+    }
+
+    /**
+      * hàm login bằng username hoặc email  
+     */
+    public function submitLogin(Request $request){
+
+        //Kiểm tra email hay username
+        $name  = $request->input('name');
+        if(preg_match('/[@]/', $name)){//email
+
+            if(Auth::attempt(['email' => $name,'password' => $request->input('password')])){
+                return redirect()->route('home');
+            }
+            else{
+                return view('admin.login')->withErrors(['login'=>'Tên đăng nhập (email) hoặc mật khẩu nhập không đúng!']);
+            }
+        }else{///username
+
+            if(Auth::attempt(['username' => $name,'password' => $request->input('password')])){
+            return redirect()->route('admin.pages');
+        }
+        else{
+            return view('admin.login')->withErrors(['login'=>'Tên đăng nhập (email) hoặc mật khẩu nhập không đúng!']);
+        }
 
     }
 
-
+}
 }

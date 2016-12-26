@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Front;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-
+use App\Models\Post;
 
 class HomeController extends Controller
 {
@@ -26,17 +26,16 @@ class HomeController extends Controller
      */
     public function index()
     {   
-        if(Auth::check()){
-            $user = Auth::user();
+        $posts = Post::paginate(2);
+         return view('index')->with('posts', $posts);
+    }
 
-            if($user->level ==0){
-                return redirect('/admin');
-            }
-            else{
-                 return view('index');
-            }
+    public function show($id){
+        $post = Post::find($id);
+        if($post){
+            return view('post')->with('post',$post);
         }else{
-             return view('index');
+            abort(404);
         }
     }
 }

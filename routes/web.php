@@ -11,16 +11,16 @@
 |
 */
 
-Route::get('/', function () {
-    return view('Index');
-});
+Route::get('/','Front\HomeController@index');
 Route::get('/home','Front\HomeController@Index')->name('home');
+Route::get('admin/login' , 'Admin\AdminController@showLogin');
 
 Route::group([	'middleware' => 'AdminMiddleware'], function () {
     Route::get('/admin','Admin\AdminController@index')->name('admin.pages');
 	Route::resource('admin/post','Admin\PostController');
+	Route::resource('admin/user','Admin\UserController');
   });  
-
+Route::get('/post/{id}', 'Front\HomeController@show')->name('front.post.show');
 Route::get('register',function(){
 	return view('user.register');
 })->name('register');
@@ -28,8 +28,8 @@ Route::get('register',function(){
 Auth::routes();
 
 Route::post('login','Front\UserController@login')->name('submitLogin');
-
+Route::post('admin/login','Admin\AdminController@submitLogin')->name('admin.submitLogin');
 Route::get('/user/{id}', 'Front\UserController@profile')->where('id', '[0-9]+')->name('user.profile');
-Route::get('/user/update/{id}', 'Front\UserController@update')->where('id', '[0-9]+')->name('user.update');
-Route::post('/user/save/{id}', 'Front\UserController@save')->where('id', '[0-9]+')->name('user.save');
+Route::get('/user/update/{id}', 'Front\UserController@update')->where('id', '[0-9]+')->name('font.user.update');
+Route::post('/user/save/{id}', 'Front\UserController@save')->where('id', '[0-9]+')->name('front.user.save');
 

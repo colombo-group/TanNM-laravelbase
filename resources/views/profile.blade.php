@@ -37,7 +37,7 @@
 	</table>
 	<div class='row'>
 		<div class="float-xs-right">
-			<a href="{{ route('user.update',$user->id) }}" class='btn btn-info'>Cập nhật</a>
+			<a href="{{ route('font.user.update',$user->id) }}" class='btn btn-info'>Cập nhật</a>
 		</div>
 	</div>
 	</section>

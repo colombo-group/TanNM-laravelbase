@@ -92,7 +92,8 @@ class UserController extends Controller
     			return redirect()->route('user.update',$user->id)->withErrors($validate);
     		}else{
     			$user->name= $request->input('name');
-    			$user->birthday= $request->input('birthday');
+                if($request->birthday!=null){
+    			$user->birthday= $request->input('birthday');}
     			$user->address= $request->input('address');
     			$user->slogan= $request->input('slogan');
     			$user->sex= $request->input('sex');

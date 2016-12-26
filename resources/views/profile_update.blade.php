@@ -7,7 +7,7 @@
 <div class=" container content">
 	<h2 class="display-2">Cập nhật profile</h2>
 	
-  <form action="{{ route('user.save', $user->id) }}" method="POST">
+  <form action="{{ route('front.user.save', $user->id) }}" method="POST">
   {{ csrf_field() }}
     <div class="form-group">
       <label for="name">Họ tên</label>
@@ -44,7 +44,7 @@
 
     <div class="form-group">
       <label for="name">Ngày sinh</label>
-      <input type="date" class="form-control" id='date' name='birthday' value="<?php if($user->birthday!=null){ echo $user->birthday->format('Y-m-d'); }?>">
+      <input type="date" class="form-control" id='date' name='birthday' value="<?php if($user->birthday!=null){ echo $user->birthday; }?>">
     </div> 
 
     <div class="form-group">

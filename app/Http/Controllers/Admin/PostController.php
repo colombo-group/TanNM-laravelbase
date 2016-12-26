@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Validator;
@@ -17,6 +18,10 @@ class PostController extends Controller
     public function index()
     {
         //
+        $posts = Post::paginate(2);
+
+
+        return view('admin.index')->with('posts', $posts ); 
     }
 
     /**
@@ -37,7 +42,6 @@ class PostController extends Controller
      */
     public function store(Request $postRequest)
     {
-
             //Kiểm tra title
             $validate = Validator::make($postRequest->all(),[
                'title'=>'required|max:255' 
@@ -92,7 +96,13 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        //check id
+        $post = Post::find($id);
+        if($post){
+           return view('admin.editPost')->with('post', $post);
+        }
+        else{
+            abort(404);        }
     }
 
     /**
@@ -102,9 +112,40 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $postRequest, $id)
     {
-        //
+           $post = Post::find($id);
+            $validate = Validator::make($postRequest->all(),[
+               'title'=>'required|max:255' 
+            ],['title.required'=>'Title không được trống']);
+
+            if($validate->fails()){
+                return redirect()->route('post.edit',$id)->withErrors($validate);
+            }
+
+            $thumb=null;
+          //lưu ảnh thumbnail
+            if($postRequest->hasFile('thumb')){
+                $thumb = $postRequest->file('thumb');
+                $validate = Validator::make($postRequest->all(),
+                     ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
+
+                if($validate->fails()){
+                        return redirect()->route('post.edit',$id)->withErrors($validate);
+               }
+               $path = 'upload';
+               $fileName = time()."-".$thumb->getClientOriginalName();
+               if(File::exists($post->thumb)){
+               File::delete($post->thumb);}
+               $thumb->move($path , $fileName); 
+               $thumb = $path."/".$fileName;
+            }
+            //Lưu csdl
+           $post->title = $postRequest->input('title');
+           if($thumb!=null){$post->thumb = $thumb;}
+           $post->content = $postRequest->input('content');
+           $post->save();
+           return redirect()->route('post.show',$post->id);
     }
 
     /**
@@ -116,5 +157,16 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+        $post = Post::find($id);
+        if($post){
+            //Xóa file ảnh
+            if(File::exists($post->thumb)){
+                File::delete($post->thumb);
+            }
+            $post->delete();
+            return redirect()->route('post.index');
+        }else{
+            abort(404);
+        }
     }
 }

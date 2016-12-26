@@ -6,21 +6,28 @@
 <li class="nav-item active">
 	<a class="nav-link" href="{{ route('admin.pages') }}" >Pages<span class="sr-only">(current)</span></a>
 </li>
-<li class="nav-item">
-	<a class="nav-link" href="{{ route('user.index')}}">User</a>
-</li> 
+	<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="route('user.index')" role="button" aria-haspopup="true" aria-expanded="false">
+							User
+						</a>
+						<div class="dropdown-menu" aria-labelledby="Preview">
+							<a class="dropdown-item" href="{{ route('user.index') }}">List</a>
+							<a class="dropdown-item" href="{{ route('admin.recycle') }}" >Recycle</a>
+							
+						</div>
+					</li>
 @endsection
 @section('script')
 <script type="text/javascript" src="{{ asset('js/post.js') }}"></script>
 @endsection
 @section('content')
-	<div class="container">
+	<div class="container wrapper">
 		<div class="content">
 			<div class="row">
 				<h4 class="display-4">{{ $post->title }}</h4>
 				<hr>
 				<br>
-				<div class="col-xs-2">
+				<div class="col-sm-12 col-md-2">
 					@if($post->thumb!=null)
 						<img src="{{ asset($post->thumb) }}" alt="Thumb" class="img-fluid" >
 					@endif
@@ -30,7 +37,7 @@
 					<a href="{{ route('post.edit',$post->id) }}" class="btn btn-primary btn-sm"><strong>Update</strong></a>
 					<a href="javascript:;" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delModal"><strong>Delete</strong></a>
 				</div>
-				<div class="col-xs-10">
+				<div class="col-sm-12 col-md-10">
 					{!! $post->content !!}
 				</div>
 			</div>

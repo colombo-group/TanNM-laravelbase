@@ -3,12 +3,19 @@
 | {{$user->name}}
 @endsection
 @section('nav-item')
-<li class="nav-item active">
+<li class="nav-item ">
 	<a class="nav-link" href="{{ route('admin.pages') }}" >Pages</a>
 </li>
-<li class="nav-item">
-	<a class="nav-link" href="{{  route('user.index') }}">User<span class="sr-only">(current)</span></a>
-</li> 
+	<li class="nav-item dropdown active">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="route('user.index')" role="button" aria-haspopup="true" aria-expanded="false">
+							User
+						</a>
+						<div class="dropdown-menu" aria-labelledby="Preview">
+							<a class="dropdown-item" href="{{ route('user.index') }}">List</a>
+							<a class="dropdown-item" href="{{ route('admin.recycle') }}" >Recycle</a>
+							
+						</div>
+					</li>
 @endsection
 @section('content')
 <div class="container">

@@ -16,7 +16,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
 
     /**
@@ -26,7 +26,7 @@ class HomeController extends Controller
      */
     public function index()
     {   
-        $posts = Post::paginate(2);
+        $posts = Post::orderBy('created_at', 'desc')->paginate(2);
          return view('index')->with('posts', $posts);
     }
 

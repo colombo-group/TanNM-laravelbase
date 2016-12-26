@@ -30,7 +30,7 @@
         <div class="form-check ">
           <label class="form-check-label">
             @if($user->sex!=null && $user->sex=='girl')
-            <input type="radio" class="form-check-input" name="sex" id="boy" value="girl" checked>
+            <input type="radio" class="form-check-input" name="sex" id="girl" value="girl" checked>
             @else
             <input type="radio" class="form-check-input" name="sex" id="girl" value="girl" >
             @endif

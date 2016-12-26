@@ -12,12 +12,15 @@
 */
 
 Route::get('/','Front\HomeController@index');
+
 Route::get('/home','Front\HomeController@Index')->name('home');
 Route::get('admin/login' , 'Admin\AdminController@showLogin');
 
 Route::group([	'middleware' => 'AdminMiddleware'], function () {
     Route::get('/admin','Admin\AdminController@index')->name('admin.pages');
-    Route::get('admin/user/dellist','Admin\UserController@listDel')->name('admin.user.delList');
+    Route::get('/admin/user/restore/{id}', 'Admin\UserController@restore')->name('admin.user.restore');
+    Route::get('admin/user/recycle','Admin\UserController@recycle')->name('admin.recycle');
+    Route::get('admin/delete/{id}','Admin\UserController@delete')->name('admin.delete');
 	Route::resource('admin/post','Admin\PostController');
 	Route::resource('admin/user','Admin\UserController');
 	

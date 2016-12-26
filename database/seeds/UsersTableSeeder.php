@@ -14,7 +14,16 @@ class UsersTableSeeder extends Seeder
          $faker = Faker\Factory::create();
 
         $limit = 100;
-
+        Db::table('users')->insert([
+             'name' => 'admin',
+                'username'=>'admin',
+                'email' => 'admin@admin.com',
+                'password'=>bcrypt('123456'),
+                'address' => $faker->address,
+                'sex'=>'Boy',
+                'birthday'=>$faker->date($format = 'Y-m-d', $max = 'now'),
+                'slogan'=>$faker->text($maxNbChars = 200) 
+            ]);
         for ($i = 0; $i < $limit; $i++) {
             DB::table('users')->insert([ //,
                 'name' => $faker->name,

@@ -18,7 +18,7 @@ class UserController extends Controller
     public function index()
     {
         //
-        $users = User::paginate(5);
+        $users = User::orderBy('created_at', 'desc')->paginate(6);
         return view('admin.users')->with('users' ,$users);
     }
 
@@ -107,12 +107,10 @@ class UserController extends Controller
      * 
      * @return view
      */
-    public function listDel()
+    public function recycle()
     {
-        echo 'fdfd';die();
-        $user = User::where('deleted_at' ,'><' ,null)->all();
-        dd($user);
-        return view('admin.delList');
+        $user = User::onlyTrashed()->paginate(5);
+        return view('admin.recycle')->with('users',$user);
     }   
     /**
      * Remove the specified resource from storage.
@@ -125,17 +123,34 @@ class UserController extends Controller
         //
         $user = User::find($id);
         if($user){
-            if($user->deleted_at ==null){///soft delete
+           
                 $user->delete();
-                return redirect()->route('user.index');
-            }
-            else{//xóa hẳn
-                $user->forceDelete();
-                return redirect()->route('user.index');
-
-            }
+                return redirect()->route('user.index')->with('status','Xóa rồi nhé !');
+            
         }else{
             abort(404);
+        }
+    }
+    public function delete($id){
+        $user = User::withTrashed()->where('id', '=', $id)->first();
+        if($user){
+            $user->forceDelete();
+            return redirect()->route('admin.recycle')->with('status','Đã xóa vĩnh viễn!');
+        }else{
+            abort(404);
+        }
+    }
+    /**
+     *Restore
+    */
+    public function restore($id){
+       $user = User::withTrashed()->where('id', '=', $id)->first();
+        if($user->trashed()){
+            $user->restore();
+            return redirect()->route('user.index')->with('status', 'Đã khôi phục User');
+        }
+        else{
+           abort(404);
         }
     }
 }

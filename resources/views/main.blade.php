@@ -13,8 +13,8 @@
 			<div class="col-xs-12">
 				<nav class="navbar navbar-dark bg-primary ">
 					<a class="navbar-brand" href="/">Trainee Blog</a>
-
 					<ul class="nav navbar-nav float-xs-right">
+					<li class="nav-item"><a href="/" class="nav-link">Home</a></li>
 					@yield('nav-item')
 				<!-- 	<li class="nav-item">
 					<a class="nav-link" href="#" >Pages</a>
@@ -32,6 +32,9 @@
 							@endif
 						</a>
 						<div class="dropdown-menu" aria-labelledby="Preview">
+						@if(Auth::user()->level==0)
+							<a href="{{ route('admin.pages')}}" class="dropdown-item">Trang quản trị</a>
+							@endif
 							<a class="dropdown-item" href="{{ route('user.profile',Auth::user()->id) }}">Profile</a>
 							<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
 							document.getElementById('logout-form').submit();">Đăng xuất</a>
@@ -54,5 +57,15 @@
 <div class="container">
 	@yield('content')
 </div>
+
+<footer id="footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="align-center">Design by Losblancos893</p>
+				</div>
+			</div>
+		</div>
+	</footer>
 </body>
 </html>

@@ -3,9 +3,16 @@
 <li class="nav-item active">
 	<a class="nav-link" href="{{ route('admin.pages') }}" >Pages<span class="sr-only">(current)</span></a>
 </li>
-<li class="nav-item">
-	<a class="nav-link" href="#">User</a>
-</li> 
+	<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="route('user.index')" role="button" aria-haspopup="true" aria-expanded="false">
+							User
+						</a>
+						<div class="dropdown-menu" aria-labelledby="Preview">
+							<a class="dropdown-item" href="{{ route('user.index') }}">List</a>
+							<a class="dropdown-item" href="{{ route('admin.recycle') }}" >Recycle</a>
+							
+						</div>
+					</li>
 @endsection
 @section('title','| Edit POst')
 @section('script')

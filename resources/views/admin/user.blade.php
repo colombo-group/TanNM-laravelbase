@@ -3,12 +3,19 @@
 | {{$user->name}}
 @endsection
 @section('nav-item')
-<li class="nav-item active">
+<li class="nav-item ">
 	<a class="nav-link" href="{{ route('admin.pages') }}" >Pages</a>
 </li>
-<li class="nav-item">
-	<a class="nav-link" href="{{  route('user.index') }}">User<span class="sr-only">(current)</span></a>
-</li> 
+	<li class="nav-item dropdown active">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="route('user.index')" role="button" aria-haspopup="true" aria-expanded="false">
+							User
+						</a>
+						<div class="dropdown-menu" aria-labelledby="Preview">
+							<a class="dropdown-item" href="{{ route('user.index') }}">List</a>
+							<a class="dropdown-item" href="{{ route('admin.recycle') }}" >Recycle</a>
+							
+						</div>
+					</li>
 @endsection
 @section('content')
 <div class="container">
@@ -46,6 +53,7 @@
 			</tbody>
 		</table>
 		<!-- Button trigger modal -->
+		@if($user->id != Auth::user()->id)
 		<a href="javascript:;" class="btn btn-danger " data-toggle="modal" data-target="#myModal">
 			Delete
 		</a>
@@ -61,7 +69,7 @@
 						<h4 class="modal-title" id="myModalLabel">Xác nhận xóa</h4>
 					</div>
 					<div class="modal-body">
-						Sau khi xóa . user sẽ được chuyển vào del list!
+						Sau khi xóa . user sẽ được chuyển vào Recycle!
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -74,6 +82,7 @@
 				</div>
 			</div>
 		</div>
+		@endif
 				<a href="{{ route('user.edit' ,$user->id) }}" class="float-xs-right btn btn-primary"><strong>Update</strong></a>
 
 		</div>

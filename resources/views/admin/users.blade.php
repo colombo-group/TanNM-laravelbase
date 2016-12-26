@@ -13,6 +13,7 @@
 	<div class="content">
 		<h2 class="display-3 align-center">Users</h2>
 		<hr>
+
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -23,18 +24,27 @@
 					<th>Option</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody>	
 				@foreach($users as $user)
-					<tr>
-						<td><a href="">{{ $user->username }}</a></td>
-						<td><a href="">{{ $user->email }}</a></td>
-						<td><a href="">{{ $user->name }}</a></td>
-						<td><a href="">{{ $user->address }}</a></td>
-						<th><a href="" class="btn btn-danger btn-sm"><strong>Delete</strong></a></th>
+				@if($user->level !=0)
+				<tr>
+					<td><a href="{{route('user.show', $user->id) }}">{{ $user->username }}</a></td>
+					<td><p>{{ $user->email }}</p></td>
+					<td><p>{{ $user->name }}</p></td>
+					<td><p>{{ $user->address }}</p></td>
+					<th>
+
+						</th>
 					</tr>
-				@endforeach
-			</tbody>
-		</table>
+					@endif	
+					@endforeach
+				</tbody>
+			</table>
+			<h2>
+			<a href="{{ route('admin.user.delList') }}" class="btn btn-default float-xs-right">Deleted List</a></h2>
+			{{ $users->links('pagination') }}
+		</div>
 	</div>
-</div>
-@endsection
+
+
+	@endsection

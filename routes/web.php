@@ -17,8 +17,10 @@ Route::get('admin/login' , 'Admin\AdminController@showLogin');
 
 Route::group([	'middleware' => 'AdminMiddleware'], function () {
     Route::get('/admin','Admin\AdminController@index')->name('admin.pages');
+    Route::get('admin/user/dellist','Admin\UserController@listDel')->name('admin.user.delList');
 	Route::resource('admin/post','Admin\PostController');
 	Route::resource('admin/user','Admin\UserController');
+	
   });  
 Route::get('/post/{id}', 'Front\HomeController@show')->name('front.post.show');
 Route::get('register',function(){

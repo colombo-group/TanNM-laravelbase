@@ -28,6 +28,7 @@ class AdminController extends Controller
     	return view('admin.login');
     }
 
+
     /**
       * hàm login bằng username hoặc email  
      */

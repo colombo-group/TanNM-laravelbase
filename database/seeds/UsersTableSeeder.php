@@ -22,7 +22,7 @@ class UsersTableSeeder extends Seeder
                 'email' => $faker->unique()->email,
                 'password'=>bcrypt('123456'),
                 'address' => $faker->address,
-                'sex'=>'',
+                'sex'=>'Girl',
                 'birthday'=>$faker->date($format = 'Y-m-d', $max = 'now'),
                 'slogan'=>$faker->text($maxNbChars = 200) 
             ]);

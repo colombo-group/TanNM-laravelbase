@@ -1,4 +1,3 @@
-
 <html>
 <head>
 	<title>@yield('title')</title>
@@ -24,8 +23,13 @@
 						<a class="nav-link" href="#">User</a>
 					</li> -->
 					<li class="nav-item dropdown">
+					@if(Auth::check())
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+							@if(Auth::user()->level==0)
 							Admin
+							@else
+							{{ Auth::user()->name}}
+							@endif
 						</a>
 						<div class="dropdown-menu" aria-labelledby="Preview">
 							<a class="dropdown-item" href="{{ route('user.profile',Auth::user()->id) }}">Profile</a>
@@ -35,7 +39,12 @@
 								{{ csrf_field() }}
 							</form>
 						</div>
+
 					</li>
+										@else
+					<a href="{{route('login')}}" class="btn btn-primary">Đăng nhập</a>	
+					<a href="{{route('register')}}" class="btn btn-primary">Đăng ký</a>
+					@endif	
 				</ul>	
 			</nav>
 		</div>

@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\softDeletes;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -15,11 +17,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','username'
+        'name', 'email', 'password','username','birthday','sex','slogan','address'
     ];
 
     protected $dates = [
-        'created_at','updated_at'
+        'created_at','updated_at','delete_at'
     ];
     /**
      * The attributes that should be hidden for arrays.

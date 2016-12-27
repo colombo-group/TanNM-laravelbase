@@ -22,21 +22,21 @@
 	<hr>
 	<div class="row">
 		<div class="float-xs-right">
-			<a href="{{ route('post.create') }}" class="btn btn-info btn-sm">Add Page</a>
+			<a href="{{ route('page.create') }}" class="btn btn-info btn-sm">Add Page</a>
 		</div>
 	</div>	
-	<div class="posts">
-		@foreach($posts as $post)
+	<div class="pages">
+		@foreach($pages as $page)
 		<div class="row clear">
 			<div class="col-sm-12 col-md-1">
-				@if($post->thumb !=null)
-				<img src="{{ asset($post->thumb) }}" alt="" class="img-fluid" style="max-height:150px;">
+				@if($page->thumb !=null)
+				<img src="{{ asset($page->thumb) }}" alt="" class="img-fluid" style="max-height:150px;">
 				@endif	
 			</div>
 			<div class="col-sm-12 col-md-9">
-				<a href="{{ route('post.show',$post->id) }}"><h4 class="display-5">{{ $post->title }}</h4></a>
+				<a href="{{ route('page.show',$page->id) }}"><h4 class="display-5">{{ $page->title }}</h4></a>
 				<?php 
-				$sort = explode(" ", strip_tags($post->content));
+				$sort = explode(" ", strip_tags($page->content));
 				$sortContent = [];
 				if(count($sort) > 20){
 					for ($i=0; $i < 20; $i++) { 
@@ -50,9 +50,9 @@
 				}
 				?>
 				<p>{!! implode(" ",$sortContent)!!}...</p>
-				<footer class="blockquote-footer">Created at :{{ $post->created_at }}
+				<footer class="blockquote-footer">Created at :{{ $page->created_at }}
 
-					<span><a href="{{ route('post.edit',$post->id) }}" class="btn btn-primary btn-sm"><strong>Update</strong></a>
+					<span><a href="{{ route('page.edit',$page->id) }}" class="btn btn-primary btn-sm"><strong>Update</strong></a>
 						<a href="javascript:;" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delModal"><strong>Delete</strong></a></span></footer>
 						<div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 							<div class="modal-dialog" role="document">
@@ -64,13 +64,13 @@
 										<h4 class="modal-title" id="myModalLabel">Xác nhận xóa</h4>
 									</div>
 									<div class="modal-body">
-										Xóa "{{ $post->title }}" ?
+										Xóa "{{ $page->title }}" ?
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-										<a href="{{route('post.destroy' , $post->id) }}" onclick="event.preventDefault();
+										<a href="{{route('page.destroy' , $page->id) }}" onclick="event.preventDefault();
 											document.getElementById('delete-form').submit();" type="button" class="btn btn-primary">Delete</a>
-											{{ Form::open(array('url' => 'admin/post/' . $post->id, 'class' => 'pull-right', 'style'=>'display:hidden','id'=>'delete-form')) }}
+											{{ Form::open(array('url' => 'admin/page/'. $page->id, 'class' => 'pull-right', 'style'=>'display:hidden','id'=>'delete-form')) }}
 											{{ Form::hidden('_method', 'DELETE') }}
 											{{ Form::close() }}
 										</div>
@@ -82,7 +82,7 @@
 					</div>
 				</div>
 				@endforeach
-			{{ $posts->links('pagination') }}
+			{{ $pages->links('pagination') }}
 		</div>
 
 <br/>

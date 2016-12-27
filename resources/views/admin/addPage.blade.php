@@ -25,7 +25,7 @@
 	<div class="content">
 	<h2 class="display-4 align-center">New Page</h2>
 		<hr>
-		<form action="{{ route('post.store') }}" method='POST' enctype="multipart/form-data" novalidate>
+		<form action="{{ route('page.store') }}" method='POST' enctype="multipart/form-data" novalidate>
 			
 				{{ csrf_field() 
 				}}

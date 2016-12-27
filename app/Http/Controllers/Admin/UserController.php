@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Repositories\UserRepository;
 
 class UserController extends Controller
 {
@@ -15,10 +15,16 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    protected $user ;
+
+     function __construct(UserRepository $user){
+        $this->user = $user;
+     }
+
     public function index()
     {
         //
-        $users = User::orderBy('created_at', 'desc')->paginate(6);
+        $users = $this->user->paginateOrderBy("updated_at" , 'DESC' , 10);
         return view('admin.users')->with('users' ,$users);
     }
 
@@ -52,7 +58,7 @@ class UserController extends Controller
     public function show($id)
     {
         //
-        $user = User::find($id);
+        $user = $this->user->findId($id);
         if($user){
             return view('admin.user')->with('user',$user);
         }else{
@@ -69,7 +75,7 @@ class UserController extends Controller
     public function edit($id)
     {
         //
-        $user = User::find($id);
+        $user = $this->user->findId($id);
         if($user){
             return view('admin.userUpdate')->with('user',$user);
         }else{
@@ -87,7 +93,8 @@ class UserController extends Controller
     public function update(Request $userRequest, $id)
     {
         //
-        $user = User::find($id);
+        $user = $this->user->findId($id);
+
         $validate = Validator::make($userRequest->all(),[
                 'username'=>'required|max:255|unique:users,username,'.$user->id,
                 'email' => 'required|email|unique:users,email,'.$user->id
@@ -95,8 +102,9 @@ class UserController extends Controller
         if($validate->fails()){
             return redirect()->route('user.edit',$user->id)->withErrors($validate);
         }else{
-            $user->fill($userRequest->all())->save();
-            return redirect()->route('user.show',$user->id);
+        
+            $this->user->save($userRequest , $id);    
+            return redirect()->route('user.show',$id);
         }
     }
 
@@ -109,7 +117,7 @@ class UserController extends Controller
      */
     public function recycle()
     {
-        $user = User::onlyTrashed()->paginate(5);
+        $user = $this->user->trashed(5);
         return view('admin.recycle')->with('users',$user);
     }   
     /**
@@ -121,10 +129,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-        $user = User::find($id);
-        if($user){
-           
-                $user->delete();
+        if($this->user->delete($id)){
                 return redirect()->route('user.index')->with('status','Xóa rồi nhé !');
             
         }else{
@@ -132,9 +137,7 @@ class UserController extends Controller
         }
     }
     public function delete($id){
-        $user = User::withTrashed()->where('id', '=', $id)->first();
-        if($user){
-            $user->forceDelete();
+        if($this->user->forceDel($id)){
             return redirect()->route('admin.recycle')->with('status','Đã xóa vĩnh viễn!');
         }else{
             abort(404);
@@ -144,10 +147,9 @@ class UserController extends Controller
      *Restore
     */
     public function restore($id){
-       $user = User::withTrashed()->where('id', '=', $id)->first();
-        if($user->trashed()){
-            $user->restore();
-            return redirect()->route('user.index')->with('status', 'Đã khôi phục User');
+       if($this->user->withTrashed($id)){
+           return redirect()->route('user.index')->with('status', 'Đã khôi phục User');
+       
         }
         else{
            abort(404);

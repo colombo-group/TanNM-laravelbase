@@ -5,18 +5,23 @@ namespace App\Http\Controllers\Front;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use App\Models\Post;
+use App\Repositories\PageRepository;
+
 
 class HomeController extends Controller
 {
+
+    protected $page;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(PageRepository $page)
     {
         //$this->middleware('auth');
+        $this->page = $page;
+
     }
 
     /**
@@ -26,14 +31,14 @@ class HomeController extends Controller
      */
     public function index()
     {   
-        $posts = Post::orderBy('created_at', 'desc')->paginate(2);
-         return view('index')->with('posts', $posts);
+        $pages = $this->page->paginateOrderBy('updated_at' , 'DESC' , 2);
+         return view('index')->with('pages', $pages);
     }
 
     public function show($id){
-        $post = Post::find($id);
-        if($post){
-            return view('post')->with('post',$post);
+        $page = $this->page->findId($id);
+        if($page){
+            return view('page')->with('page',$page);
         }else{
             abort(404);
         }

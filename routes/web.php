@@ -21,11 +21,11 @@ Route::group([	'middleware' => 'AdminMiddleware'], function () {
     Route::get('/admin/user/restore/{id}', 'Admin\UserController@restore')->name('admin.user.restore');
     Route::get('admin/user/recycle','Admin\UserController@recycle')->name('admin.recycle');
     Route::get('admin/delete/{id}','Admin\UserController@delete')->name('admin.delete');
-	Route::resource('admin/post','Admin\PostController');
+	Route::resource('admin/page','Admin\PageController');
 	Route::resource('admin/user','Admin\UserController');
 	
   });  
-Route::get('/post/{id}', 'Front\HomeController@show')->name('front.post.show');
+Route::get('/page/{id}', 'Front\HomeController@show')->name('front.page.show');
 Route::get('register',function(){
 	return view('user.register');
 })->name('register');

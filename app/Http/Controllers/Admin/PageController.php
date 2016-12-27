@@ -5,11 +5,19 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Http\Controllers\Controller;
-use App\Models\Post;
 use Validator;
+use App\Repositories\PageRepository;
 
-class PostController extends Controller
+class PageController extends Controller
 {
+
+       protected $page;
+
+       function __construct(PageRepository $page){
+            $this->page = $page;
+       } 
+
+
     /**
      * Display a listing of the resource.
      *
@@ -18,10 +26,8 @@ class PostController extends Controller
     public function index()
     {
         //
-        $posts = Post::paginate(2);
-
-
-        return view('admin.index')->with('posts', $posts ); 
+        $pages = $this->page->paginateOrderBy('created_at' ,'DESC', 2);
+        return view('admin.index')->with('pages', $pages );
     }
 
     /**
@@ -31,7 +37,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('admin.addPost');
+        return view('admin.addPage');
     }
 
     /**
@@ -40,39 +46,40 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $postRequest)
+    public function store(Request $pageRequest)
     {
             //Kiểm tra title
-        $validate = Validator::make($postRequest->all(),[
+        $validate = Validator::make($pageRequest->all(),[
          'title'=>'required|max:255' 
          ],['title.required'=>'Title không được trống']);
 
         if($validate->fails()){
-            return redirect()->intended('admin/post/create')->withErrors($validate);
+            return redirect()->intended('admin/page/create')->withErrors($validate);
         }
 
         $thumb=null;
           //lưu ảnh thumbnail
-        if($postRequest->hasFile('thumb')){
-            $thumb = $postRequest->file('thumb');
-            $validate = Validator::make($postRequest->all(),
+        if($pageRequest->hasFile('thumb')){
+            $thumb = $pageRequest->file('thumb');
+            $validate = Validator::make($pageRequest->all(),
                ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
 
             if($validate->fails()){
-                return redirect()->intended('admin/post/create')->withErrors($validate);
+                return redirect()->intended('admin/page/create')->withErrors($validate);
             }
             $path = 'upload';
             $fileName = time()."-".$thumb->getClientOriginalName();
             $thumb->move($path , $fileName); 
             $thumb = $path."/".$fileName;
         }
-            //Lưu csdl
-        $post = new Post();
-        $post->title = $postRequest->input('title');
-        $post->thumb = $thumb;
-        $post->content = $postRequest->input('content');
-        $post->save();
-        return redirect()->route('post.show',$post->id);
+        //Lưu csdl
+        $page = $this->page->save($pageRequest ,$thumb);
+        if($page!=false){
+            return redirect()->route('page.show',$page);
+        }
+        else{
+            abort(404);
+        }
     }
 
     /**
@@ -84,8 +91,8 @@ class PostController extends Controller
     public function show($id)
     {
         //
-        $post  = Post::find($id);
-        return view('admin.post')->with('post',$post);
+        $page  = $this->page->findId($id);
+        return view('admin.page')->with('page',$page);
     }
 
     /**
@@ -97,9 +104,9 @@ class PostController extends Controller
     public function edit($id)
     {
         //check id
-        $post = Post::find($id);
-        if($post){
-         return view('admin.editPost')->with('post', $post);
+        $page = $this->page->findId($id);
+        if($page){
+         return view('admin.editPage')->with('page', $page);
      }
      else{
         abort(404);        }
@@ -112,40 +119,41 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $postRequest, $id)
+    public function update(Request $pageRequest, $id)
     {
-     $post = Post::find($id);
-     $validate = Validator::make($postRequest->all(),[
+     $page = $this->page->findId($id);
+     $validate = Validator::make($pageRequest->all(),[
          'title'=>'required|max:255' 
          ],['title.required'=>'Title không được trống']);
 
      if($validate->fails()){
-        return redirect()->route('post.edit',$id)->withErrors($validate);
+        return redirect()->route('page.edit',$id)->withErrors($validate);
     }
 
     $thumb=null;
           //lưu ảnh thumbnail
-    if($postRequest->hasFile('thumb')){
-        $thumb = $postRequest->file('thumb');
-        $validate = Validator::make($postRequest->all(),
+    if($pageRequest->hasFile('thumb')){
+        $thumb = $pageRequest->file('thumb');
+        $validate = Validator::make($pageRequest->all(),
            ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
 
         if($validate->fails()){
-            return redirect()->route('post.edit',$id)->withErrors($validate);
+            return redirect()->route('page.edit',$id)->withErrors($validate);
         }
         $path = 'upload';
         $fileName = time()."-".$thumb->getClientOriginalName();
-        if(File::exists($post->thumb)){
-         File::delete($post->thumb);}
-         $thumb->move($path , $fileName); 
-         $thumb = $path."/".$fileName;
-     }
-            //Lưu csdl
-     $post->title = $postRequest->input('title');
-     if($thumb!=null){$post->thumb = $thumb;}
-     $post->content = $postRequest->input('content');
-     $post->save();
-     return redirect()->route('post.show',$post->id);
+        if(File::exists($page->thumb)){
+                    File::delete($page->thumb);}
+                  $thumb->move($path , $fileName); 
+                 $thumb = $path."/".$fileName;
+      }
+        //Lưu csdl
+        $id = $this->page->update($pageRequest ,$id ,  $thumb );
+        if($id !=false){
+            return redirect()->route('page.show',$id);
+        }else{
+            abort(404);
+        }
  }
 
     /**
@@ -157,12 +165,12 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
-        $post = Post::find($id);
-        if($post){
+        $page = $this->page->findId($id);
+        if($page){
             //Xóa file ảnh
             $results  = "";
             //preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $post->content, $matches);
-            preg_match_all('/<img[^>]+>/i',$post->content, $results);
+            preg_match_all('/<img[^>]+>/i',$page->content, $results);
             //preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $results[0][2], $src);
               //  var_dump($src[1]);  
                 //die();
@@ -178,11 +186,14 @@ class PostController extends Controller
                     File::delete($srcDelThumb);
                 }             
             }    
-            if(File::exists($post->thumb)){
-                File::delete($post->thumb);
+            if(File::exists($page->thumb)){
+                File::delete($page->thumb);
             }
-            $post->delete();
-            return redirect()->route('post.index')->with('status','Xóa rồi nhé !');
+            if($this->page->forceDel($id)){
+                return redirect()->route('page.index')->with('status','Xóa rồi nhé !');
+             }else{
+                abort(404);
+             }   
         }else{
             abort(404);
         }

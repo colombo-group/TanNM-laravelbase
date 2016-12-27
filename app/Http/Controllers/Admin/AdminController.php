@@ -18,7 +18,7 @@ class AdminController extends Controller
      *@return view của trng admin
 	*/
     public function index(Request $request){
-    	return redirect()->route('post.index');
+    	return redirect()->route('page.index');
     }
 
     /**

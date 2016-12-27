@@ -7,13 +7,13 @@ use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use Auth;
-
 /**
  *@author nguyenminhtan<nguyenminhtan893@gmail.com>
  * class sử lý user
  */
 class UserController extends Controller
 {
+
 
     /**
       * hàm login bằng username hoặc email  
@@ -50,7 +50,7 @@ class UserController extends Controller
     public function profile($id){
 
     	//kiểm tra id có tồn tại không
-    	$user = user::find($id);
+    	$user = $this->post->find($id);
     	if($user != null){
     		return view('profile')->with('user',$user);
     	}

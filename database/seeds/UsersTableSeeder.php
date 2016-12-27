@@ -15,9 +15,9 @@ class UsersTableSeeder extends Seeder
 
         $limit = 100;
         Db::table('users')->insert([
-             'name' => 'admin',
-                'username'=>'admin',
-                'email' => 'admin@admin.com',
+             'name' => 'bin',
+                'username'=>'bin2297',
+                'email' => 'admin@bin.com',
                 'password'=>bcrypt('123456'),
                 'address' => $faker->address,
                 'sex'=>'Boy',

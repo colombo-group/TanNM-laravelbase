@@ -42,6 +42,11 @@
 <div class="container">
   <h4 class="display-3 content">Pages</h4>
   <hr>
+    @if (session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+@endif
   @foreach($pages as $page)
   <div class="row title" style="margin-top:30px;">
     <div class="col-xs-12 col-sm-2">

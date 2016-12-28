@@ -8,6 +8,8 @@ use App\Repositories\UserRepository;
 use App\Repositories\PostRepository;
 use Validator;
 use Auth;
+use Illuminate\Support\Facades\File;
+
 
 
 /**
@@ -93,8 +95,38 @@ class PostController extends Controller
   	 *destroy 
   	 */
   	public function destroy($id){
-  		$post = $this->post->findId($id);
-  		return view('post.post')->with('post',$post);
+  		 $post = $this->post->findId($id);
+        if($post){
+            //Xóa file ảnh
+            $results  = "";
+            //preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $post->content, $matches);
+            preg_match_all('/<img[^>]+>/i',$post->content, $results);
+            //preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $results[0][2], $src);
+              //  var_dump($src[1]);  
+                //die();
+            foreach ($results[0] as $key => $value) {
+                $src = "";
+                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $value, $src);
+                $srcDel = trim($src[1],'/');
+                $srcDelThumb = str_replace('shares', 'shares/thumbs', $srcDel);
+                if(File::exists($srcDel)){
+                    File::delete($srcDel); 
+                }      
+                if(File::exists($srcDelThumb)){
+                    File::delete($srcDelThumb);
+                }             
+            }    
+            if(File::exists($post->thumb)){
+                File::delete($post->thumb);
+            }
+            if($this->post->delete($id)){
+                return redirect()->route('post.index')->with('status','Xóa rồi nhé !');
+             }else{
+                abort(404);
+             }   
+        }else{
+            abort(404);
+        }
   	}
 
   	public function edit($id){

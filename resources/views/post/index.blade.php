@@ -21,7 +21,7 @@
               <a href="{{ route('admin.pages')}}" class="dropdown-item">Trang quản trị</a>
               @endif
               <a class="dropdown-item" href="{{ route('user.profile',Auth::user()->id) }}">Profile</a>
-              <a class="dropdown-item" href="{{ route('user.profile',Auth::user()->id) }}">Posts</a>
+              <a class="dropdown-item" href="{{ route('post.index',Auth::user()->id) }}">Posts</a>
               <a class="dropdown-item" href="{{ route('post.create',Auth::user()->id) }}">Viết bài</a>
               <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
               document.getElementById('logout-form').submit();">Đăng xuất</a>
@@ -45,6 +45,11 @@
 	<div class="content">
 	<h2 class="display-3 align-center">Posts</h2>
 	<hr>
+	  @if (session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+@endif
 	<div class="row">
 		<div class="float-xs-right">
 			<a href="{{ route('post.create' , Auth::user()->id) }}" class="btn btn-info btn-sm">Add Post</a>
@@ -108,5 +113,7 @@
 				</div>
 				@endforeach
 			{{ $posts->links('pagination') }}
-		</div></div>
+		</div>
+		</div>
+		</div>
 @endsection

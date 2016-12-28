@@ -22,7 +22,13 @@
 	 *@return true|false
 	 */
 	public function delete($id){
-		
+		$post  = Post::find($id);
+		if($post->delete($id)){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
     
 

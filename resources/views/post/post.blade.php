@@ -86,7 +86,7 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <a href="{{route('post.destroy' , $post->id) }}" onclick="event.preventDefault();
 							document.getElementById('delete-form').submit();" type="button" class="btn btn-primary">Delete</a>
-        	 {{ Form::open(array('url' => 'admin/page/' . $post->id, 'class' => 'pull-right', 'style'=>'display:hidden','id'=>'delete-form')) }}
+        	 {{ Form::open(array('url' => 'post/destroy/' . $post->id, 'class' => 'pull-right', 'style'=>'display:hidden','id'=>'delete-form')) }}
                     {{ Form::hidden('_method', 'DELETE') }}
                {{ Form::close() }}
       </div>

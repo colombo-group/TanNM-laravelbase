@@ -95,7 +95,6 @@
 		public function update($input , $id , $thumb){
 
 			$post = Post::find($id);
-
 			$post->title = $input->input('title');
 			$post->content = $input->input('content');
 			if($thumb !=null){
@@ -109,6 +108,7 @@
 				return false;
 			}
 		}
+		
 	}
 
 ?>

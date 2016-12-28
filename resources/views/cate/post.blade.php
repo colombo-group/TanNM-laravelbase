@@ -7,9 +7,9 @@
           <a class="nav-link" href="/" >Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Danh mục</a>
+            <a class="nav-link active" href="{{ route('cate.index')}}">Danh mục</a>
           </li>
-          <li class="nav-item dropdown active">
+          <li class="nav-item dropdown ">
           @if(Auth::check())
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
               @if(Auth::user()->level==0)
@@ -59,10 +59,9 @@
 						<img src="{{ asset($post->thumb) }}" alt="Thumb" class="img-fluid" >
 					@endif
 					<br>
-					<h5>{{ Auth::user()->name}}</h5>
+					<h5>{{$post->users->name}}</h5>
 					<p><small>Created at: {{ $post->created_at }}</small></p>
-					<a href="{{ route('post.edit',$post->id) }}" class="btn btn-primary btn-sm"><strong>Update</strong></a>
-					<a href="javascript:;" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delModal"><strong>Delete</strong></a>
+					
 				</div>
 				<div class="col-sm-12 col-md-10">
 					{!! $post->content !!}

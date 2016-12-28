@@ -1,12 +1,11 @@
 @extends('main')
-
-@section('title', '| Trang chủ')
+@section('title', "| Bài Viết")
 @section('nav-item')
-      <li class="nav-item active">
+ <li class="nav-item ">
           <a class="nav-link" href="/" >Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('cate.index')}}">Danh mục</a>
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ route('cate.index') }}">Danh mục</a>
           </li>
           <li class="nav-item dropdown">
           @if(Auth::check())
@@ -20,13 +19,10 @@
             <div class="dropdown-menu" aria-labelledby="Preview">
             @if(Auth::user()->level==0)
               <a href="{{ route('admin.pages')}}" class="dropdown-item">Trang quản trị</a>
-              <a class="dropdown-item" href="{{ route('user.profile',Auth::user()->id) }}">Profile</a>
-  @else
-             <a class="dropdown-item" href="{{ route('user.profile',Auth::user()->id) }}">Profile</a>
-              <a class="dropdown-item" href="{{ route('post.index') }}">Posts</a>
-              <a class="dropdown-item" href="{{ route('post.create',Auth::user()->id) }}">Viết bài</a>
               @endif
-              
+              <a class="dropdown-item" href="{{ route('user.profile',Auth::user()->id) }}">Profile</a>
+              <a class="dropdown-item" href="{{ route('post.index',Auth::user()->id) }}">Posts</a>
+              <a class="dropdown-item" href="{{ route('post.create',Auth::user()->id) }}">Viết bài</a>
               <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
               document.getElementById('logout-form').submit();">Đăng xuất</a>
               <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
@@ -41,40 +37,54 @@
           <li class="nav-item"><a href="{{route('register')}}" class="nav-link">Đăng ký</a></li>
           @endif  
 @endsection
+@section('script')
+
+@endsection
 @section('content')
 <div class="container">
-  <h4 class="display-3 content">Pages</h4>
-  <hr>
-  
-  @foreach($pages as $page)
-  <div class="row title" style="margin-top:30px;">
-    <div class="col-xs-12 col-sm-2">
-      @if($page->thumb !=null)
-      <img src="{{ asset($page->thumb)}}" alt="" style="height: 140px; width:100px; ">
-      @endif
+	<div class="content">
+	<h2 class="display-3 align-center">Posts</h2>
+	<hr>
+	  @if (session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
     </div>
-    <div class="col-xs-12 col-sm-10">
-      <a href="{{ route('front.page.show',$page->id) }}"><h4 class="display-5">{{ $page->title }}</h4></a>
-      <?php 
-      $sort = explode(" ", strip_tags($page->content));
-      $sortContent = [];
-      if(count($sort) > 30){
-        for ($i=0; $i < 30; $i++) { 
-          array_push($sortContent, $sort[$i]);
-        }
-      }
-      else{
-        for ($i=0; $i < count($sort); $i++) { 
-          array_push($sortContent, $sort[$i]);
-        }
-      }
-      ?>
-      <p style="width:80%">{!! implode(" ",$sortContent)!!}...</p>
-      <footer class="blockquote-footer">Created at :{{ $page->created_at }}</footer>
-    </div>
-  </div>
-  @endforeach
-  <br>
-<div class="align-center">{{ $pages->links('pagination') }}</div>
-</div>
+@endif
+	<div class="pages">
+		@foreach($posts as $post)
+		<div class="row clear">
+			<div class="col-sm-12 col-md-1">
+				@if($post->thumb !=null)
+				<img src="{{ asset($post->thumb) }}" alt="" class="img-fluid" style="max-height:150px;">
+				@endif	
+			</div>
+			<div class="col-sm-12 col-md-9">
+				<a href="{{ route('cate.show',$post->id) }}"><h4 class="display-5">{{ $post->title }}</h4></a>
+				<?php 
+				$sort = explode(" ", strip_tags($post->content));
+				$sortContent = [];
+				if(count($sort) > 20){
+					for ($i=0; $i < 20; $i++) { 
+						array_push($sortContent, $sort[$i]);
+					}
+				}
+				else{
+					for ($i=0; $i < count($sort); $i++) { 
+						array_push($sortContent, $sort[$i]);
+					}
+				}
+				?>
+				<p>{!! implode(" ",$sortContent)!!}...</p>
+				<footer class="blockquote-footer">Created at :{{ $post->created_at }}
+
+					<span>Created by: {{ $post->users->name}}</span></footer>
+						</div>
+
+					</div>
+				</div>
+				@endforeach
+			{{ $posts->links('pagination') }}
+		</div>
+		</div>
+		</div>
 @endsection

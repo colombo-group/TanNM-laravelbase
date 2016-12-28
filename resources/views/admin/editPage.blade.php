@@ -46,7 +46,7 @@
 			<div class="form-group row">
 				<label for="thumb" class="col-xs-2 col-form-label">Ảnh đại diện</label>
 				<div class="col-xs-10">
-					{{ Form::file('thumb' ,null , ['class'=>'form-control','accept'=>'image/*' ]) }}
+					<input type="file" name="thumb" class="form-group" accept="images/*">
 				</div>
 				  @if($errors->has('thumb'))
                         <small id="help-block" class="form-text text-muted">{{ $errors->first('thumb') }}</small>

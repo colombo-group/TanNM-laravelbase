@@ -31,7 +31,8 @@ Route::get('register',function(){
 })->name('register');
 
 Auth::routes();
-
+Route::get('cate', 'Front\CateController@index')->name('cate.index');
+Route::get('post/{id}', 'Front\CateController@show')->name('cate.show');
 Route::post('login','Front\UserController@login')->name('submitLogin');
 Route::post('admin/login','Admin\AdminController@submitLogin')->name('admin.submitLogin');
 Route::get('/user/{id}', 'Front\UserController@profile')->where('id', '[0-9]+')->name('user.profile');
@@ -46,4 +47,5 @@ Route::group(['middleware'=>'auth'],function(){
 	Route::get('post/edit/{id}','Post\PostController@edit')->name('post.edit')->middleware('PostMiddleware');
 	Route::get('post','Post\PostController@index')->name('post.index');
 	Route::delete('post/destroy/{id}','Post\PostController@destroy')->name('post.destroy')->middleware('PostMiddleware');
+	Route::post('post/update/{id}','Post\PostController@update')->name('post.update')->middleware('PostMiddleware');
 });

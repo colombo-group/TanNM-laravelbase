@@ -130,6 +130,57 @@ class PostController extends Controller
   	}
 
   	public function edit($id){
-  		echo 'fdf';
-    	}
+  		$post = $this->post->findId($id);
+  		if($post){
+  			return view('post.edit')->with('post',$post);
+  		}else{
+  			abort(404);
+  		}
+    }
+
+
+     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $postRequest, $id)
+    {
+     $post = $this->post->findId($id);
+     $validate = Validator::make($postRequest->all(),[
+         'title'=>'required|max:255' 
+         ],['title.required'=>'Title không được trống']);
+
+     if($validate->fails()){
+        return redirect()->route('post.edit',$id)->withErrors($validate);
+    }
+
+    $thumb=null;
+          //lưu ảnh thumbnail
+    if($postRequest->file('thumb')){
+        $thumb = $postRequest->file('thumb');
+        $validate = Validator::make($postRequest->all(),
+           ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
+
+        if($validate->fails()){
+            return redirect()->route('post.edit',$id)->withErrors($validate);
+        }
+        $path = 'upload/post';
+        $fileName = time()."-".$thumb->getClientOriginalName();
+        if(File::exists($post->thumb)){
+                    File::delete($post->thumb);
+          }
+                	 $thumb->move($path , $fileName); 
+                	 $thumb = $path."/".$fileName;
+      }
+        //Lưu csdl
+        $id = $this->post->update($postRequest ,$id ,  $thumb );
+        if($id !=false){
+            return redirect()->route('post.show',$id);
+        }else{
+            abort(404);
+        }
+ }
 }

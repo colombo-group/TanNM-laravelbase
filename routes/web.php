@@ -38,3 +38,12 @@ Route::get('/user/{id}', 'Front\UserController@profile')->where('id', '[0-9]+')-
 Route::get('/user/update/{id}', 'Front\UserController@update')->where('id', '[0-9]+')->name('font.user.update');
 Route::post('/user/save/{id}', 'Front\UserController@save')->where('id', '[0-9]+')->name('front.user.save');
 
+Route::group(['middleware'=>'auth'],function(){
+
+	Route::get('post/create/{userId}', 'Post\PostController@create')->name('post.create');
+	Route::post('post/store/{userId}', 'Post\PostController@store')->name('post.store');
+	Route::get('post/show/{id}','Post\PostController@show')->name('post.show')->middleware('PostMiddleware');
+	Route::get('post/edit/{id}','Post\PostController@edit')->name('post.edit')->middleware('PostMiddleware');
+	Route::get('post','Post\PostController@index')->name('post.index');
+	Route::delete('post/destroy/{id}','Post\PostController@destroy')->name('post.destroy')->middleware('PostMiddleware');
+});

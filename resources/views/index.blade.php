@@ -1,13 +1,49 @@
 @extends('main')
 
 @section('title', '| Trang chủ')
+@section('nav-item')
+      <li class="nav-item active">
+          <a class="nav-link" href="/" >Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Danh mục</a>
+          </li>
+          <li class="nav-item dropdown">
+          @if(Auth::check())
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+              @if(Auth::user()->level==0)
+              Admin
+              @else
+              {{ Auth::user()->name}}
+              @endif
+            </a>
+            <div class="dropdown-menu" aria-labelledby="Preview">
+            @if(Auth::user()->level==0)
+              <a href="{{ route('admin.pages')}}" class="dropdown-item">Trang quản trị</a>
+              @endif
+              <a class="dropdown-item" href="{{ route('user.profile',Auth::user()->id) }}">Profile</a>
+              <a class="dropdown-item" href="{{ route('post.index') }}">Posts</a>
+              <a class="dropdown-item" href="{{ route('post.create',Auth::user()->id) }}">Viết bài</a>
+              <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+              document.getElementById('logout-form').submit();">Đăng xuất</a>
+              <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                {{ csrf_field() }}
+              </form>
+            </div>
 
+          </li>
+                    @else
+
+          <li class="nav-item"><a href="{{route('login')}}" class="nav-link">Đăng nhập</a></li> 
+          <li class="nav-item"><a href="{{route('register')}}" class="nav-link">Đăng ký</a></li>
+          @endif  
+@endsection
 @section('content')
 <div class="container">
   <h4 class="display-3 content">Pages</h4>
   <hr>
   @foreach($pages as $page)
-  <div class="row " style="margin-top:30px;">
+  <div class="row title" style="margin-top:30px;">
     <div class="col-xs-12 col-sm-2">
       @if($page->thumb !=null)
       <img src="{{ asset($page->thumb)}}" alt="" style="height: 140px; width:100px; ">

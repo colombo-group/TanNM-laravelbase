@@ -4,7 +4,7 @@
 	<link rel="stylesheet" href="{{asset('css/app.css') }}">
 	<script src="{{asset('js/app.js')}}"></script>
 	<meta name="csrf-token" content="{{ csrf_token() }}">
-
+	@yield('script')
 </head>
 <body>
 	<div class="header">
@@ -14,7 +14,6 @@
 				<nav class="navbar navbar-dark bg-primary ">
 					<a class="navbar-brand" href="/">Trainee Blog</a>
 					<ul class="nav navbar-nav float-xs-right">
-					<li class="nav-item"><a href="/" class="nav-link">Home</a></li>
 					@yield('nav-item')
 				<!-- 	<li class="nav-item">
 					<a class="nav-link" href="#" >Pages</a>
@@ -22,32 +21,7 @@
 					<li class="nav-item">
 						<a class="nav-link" href="#">User</a>
 					</li> -->
-					<li class="nav-item dropdown">
-					@if(Auth::check())
-						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-							@if(Auth::user()->level==0)
-							Admin
-							@else
-							{{ Auth::user()->name}}
-							@endif
-						</a>
-						<div class="dropdown-menu" aria-labelledby="Preview">
-						@if(Auth::user()->level==0)
-							<a href="{{ route('admin.pages')}}" class="dropdown-item">Trang quản trị</a>
-							@endif
-							<a class="dropdown-item" href="{{ route('user.profile',Auth::user()->id) }}">Profile</a>
-							<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-							document.getElementById('logout-form').submit();">Đăng xuất</a>
-							<form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-								{{ csrf_field() }}
-							</form>
-						</div>
-
-					</li>
-										@else
-					<a href="{{route('login')}}" class="btn btn-primary">Đăng nhập</a>	
-					<a href="{{route('register')}}" class="btn btn-primary">Đăng ký</a>
-					@endif	
+					
 				</ul>	
 			</nav>
 		</div>

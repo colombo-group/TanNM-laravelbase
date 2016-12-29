@@ -16,6 +16,8 @@ Route::get('/','Front\HomeController@index');
 Route::get('/home','Front\HomeController@Index')->name('home');
 Route::get('admin/login' , 'Admin\AdminController@showLogin');
 
+
+//Route:: admin
 Route::group([	'middleware' => 'AdminMiddleware'], function () {
     Route::get('/admin','Admin\AdminController@index')->name('admin.pages');
     Route::get('/admin/user/restore/{id}', 'Admin\UserController@restore')->name('admin.user.restore');
@@ -23,7 +25,13 @@ Route::group([	'middleware' => 'AdminMiddleware'], function () {
     Route::get('admin/delete/{id}','Admin\UserController@delete')->name('admin.delete');
 	Route::resource('admin/page','Admin\PageController');
 	Route::resource('admin/user','Admin\UserController');
-	
+	Route::get('admin/cate', 'Admin\CateController@index')->name('admin.cate.index');
+	Route::get('admin/cate/manage', 'Admin\CateController@manage')->name('admin.cate.manage');
+	Route::get('admin/cate/add', 'Admin\CateController@add')->name('admin.cate.add');
+	Route::post('admin/cate/add', 'Admin\CateController@save')->name('admin.cate.add');
+	Route::get('admin/cate/edit/{id}', 'Admin\CateController@edit')->name('admin.cate.edit');
+	Route::post('admin/cate/update/{id}', 'Admin\CateController@update')->name('admin.cate.update');
+	Route::get('admin/cate/delete/{id}', 'Admin\CateController@delete')->name('admin.cate.delete');
   });  
 Route::get('/page/{id}', 'Front\HomeController@show')->name('front.page.show');
 Route::get('register',function(){
@@ -39,6 +47,8 @@ Route::get('/user/{id}', 'Front\UserController@profile')->where('id', '[0-9]+')-
 Route::get('/user/update/{id}', 'Front\UserController@update')->where('id', '[0-9]+')->name('font.user.update');
 Route::post('/user/save/{id}', 'Front\UserController@save')->where('id', '[0-9]+')->name('front.user.save');
 
+
+//Route posts
 Route::group(['middleware'=>'auth'],function(){
 
 	Route::get('post/create/{userId}', 'Post\PostController@create')->name('post.create');

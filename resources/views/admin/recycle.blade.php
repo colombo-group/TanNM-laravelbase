@@ -6,6 +6,16 @@ Admin |Deleted List
 <li class="nav-item ">
 	<a class="nav-link" href="{{ route('admin.pages') }}" >Pages</a>
 </li>
+<li class="nav-item dropdown ">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="route('admin.cate.index')" role="button" aria-haspopup="true" aria-expanded="false">
+							Danh mục
+						</a>
+						<div class="dropdown-menu" aria-labelledby="Preview">
+							<a class="dropdown-item" href="{{ route('admin.cate.index') }}">Tất cả danh mục</a>
+							<a class="dropdown-item" href="{{ route('admin.cate.manage') }}" >Quản lý danh mục</a>
+							
+						</div>
+					</li>
 	<li class="nav-item dropdown active">
 						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="route('user.index')" role="button" aria-haspopup="true" aria-expanded="false">
 							User

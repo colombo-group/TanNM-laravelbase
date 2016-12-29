@@ -7,7 +7,7 @@
           <a class="nav-link" href="/" >Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Danh mục</a>
+            <a class="nav-link" href="{{ route('cate.index') }}">Danh mục</a>
           </li>
           <li class="nav-item dropdown active">
           @if(Auth::check())

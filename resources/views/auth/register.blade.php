@@ -4,7 +4,7 @@
   <a class="nav-link" href="/" >Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Danh mục</a>
+            <a class="nav-link" href="{{ route('cate.index')}}">Danh mục</a>
           </li>
           <li class="nav-item dropdown">
           @if(Auth::check())
@@ -20,7 +20,7 @@
               <a href="{{ route('admin.pages')}}" class="dropdown-item">Trang quản trị</a>
               @endif
               <a class="dropdown-item" href="{{ route('user.profile',Auth::user()->id) }}">Profile</a>
-              <a class="dropdown-item" href="{{ route('user.profile',Auth::user()->id) }}">Posts</a>
+              <a class="dropdown-item" href="{{ route('post.index',Auth::user()->id) }}">Posts</a>
               <a class="dropdown-item" href="{{ route('post.create',Auth::user()->id) }}">Viết bài</a>
               <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
               document.getElementById('logout-form').submit();">Đăng xuất</a>

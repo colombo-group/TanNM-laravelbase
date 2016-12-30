@@ -8,8 +8,13 @@ class Post extends Model
 {
     //
     protected $table = 'posts';
-
+    
+    
     public function users(){
     	return $this->belongsTo('App\Models\User', 'user_id');
+    }
+
+    public function cates(){
+    	return $this->belongsTo('App\Models\Cate' , 'cate_id');
     }
 }

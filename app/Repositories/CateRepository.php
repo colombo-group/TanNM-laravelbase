@@ -28,6 +28,7 @@
 			foreach ($cates as $key ) {
 				if($key->parent_id == $id){
 					del($key->id, $cates);
+					Self::delPost($$key->id);
 					$key->delete();
 				}
 			}
@@ -42,6 +43,15 @@
 		}
 	}
     
+    /**
+	 *Xóa post theo danh mục
+    */
+
+    public static function delPost($id){
+    	$cate = Cate::find($id);
+    	$cate->posts()->delete();
+    }			
+
 	/**
 	 * Show all
 	 */

@@ -77,6 +77,7 @@
 			
 			$post->title = $input->input('title');
 			$post->content = $input->input('content');
+			$post->cate_id = $input->input('cateId');
 			$post->thumb = $optional;
 			$post->user_id = $input->userId;
 			if($post->save()){
@@ -97,6 +98,7 @@
 			$post = Post::find($id);
 			$post->title = $input->input('title');
 			$post->content = $input->input('content');
+			$post->cate_id = $input->input('cateId');
 			if($thumb !=null){
 				$post->thumb = $thumb;
 			}

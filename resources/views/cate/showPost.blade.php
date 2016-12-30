@@ -7,9 +7,9 @@
           <a class="nav-link" href="/" >Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="{{ route('cate.index')}}">Danh mục</a>
+            <a class="nav-link" href="{{ route('cate.index') }}">Danh mục</a>
           </li>
-          <li class="nav-item dropdown ">
+          <li class="nav-item dropdown active">
           @if(Auth::check())
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
               @if(Auth::user()->level==0)
@@ -59,9 +59,9 @@
 						<img src="{{ asset($post->thumb) }}" alt="Thumb" class="img-fluid" >
 					@endif
 					<br>
-					<h5>{{$post->users->name}}</h5>
-					<p><small>Created at: {{ $post->created_at }}</small></p>
-					
+					<h5>{{ $post->users->name }}</h5>
+					<p><small>Cập nhật lúc: {{ $post->updated_at }}</small></p>
+          <p><small>Danh mục: {{ $post->cates->title }}</small> </p>
 				</div>
 				<div class="col-sm-12 col-md-10">
 					{!! $post->content !!}
@@ -69,27 +69,5 @@
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title" id="myModalLabel">Xác nhận xóa</h4>
-      </div>
-      <div class="modal-body">
-        Xóa "{{ $post->title }}" ?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <a href="{{route('post.destroy' , $post->id) }}" onclick="event.preventDefault();
-							document.getElementById('delete-form').submit();" type="button" class="btn btn-primary">Delete</a>
-        	 {{ Form::open(array('url' => 'post/destroy/' . $post->id, 'class' => 'pull-right', 'style'=>'display:hidden','id'=>'delete-form')) }}
-                    {{ Form::hidden('_method', 'DELETE') }}
-               {{ Form::close() }}
-      </div>
-    </div>
-  </div>
-</div>
+	
 @endsection

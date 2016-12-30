@@ -56,6 +56,14 @@
 				<div class="col-xs-10">
 					<input class="form-control" type="text" id="title" placeholder="Title" name='title' required>
 				</div>
+				</div>
+			<div class="form-group row">	
+				<label for="title" class="col-xs-2 col-form-label">Danh mục</label>
+				<div class="col-xs-10">
+					<select name="cateId" class="form-control">
+						{{  cate($cates) }}
+					</select>
+				</div>
 				  @if($errors->has('title'))
                         <small id="help-block" class="form-text text-muted">{{ $errors->first('title') }}</small>
 				@endif
@@ -82,3 +90,16 @@
 	</div>
 </div>
 @endsection
+<?php 
+	function cate($cates , $parentId=0 , $char =""){
+		foreach ($cates as $cate) 
+		{
+			if($cate->parent_id == $parentId){
+				
+				echo "<option value='".$cate->id."'>".$char.$cate->title."</option>";
+				cate($cates , $cate->id, $char."--");
+			}
+		}
+	}
+
+?>

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
 use App\Repositories\PostRepository;
 use Validator;
+use App\Repositories\CateRepository;
 use Auth;
 use Illuminate\Support\Facades\File;
 
@@ -27,7 +28,8 @@ class PostController extends Controller
     function __construct(){
     	$this->user = new UserRepository;
     	$this->post = new PostRepository;
-    }
+      $this->cate = new CateRepository;
+    } 
 
     /**
      * create
@@ -36,7 +38,8 @@ class PostController extends Controller
      */
   	public function create($userId){
   		if($this->user->findId($userId)){
-  			return view('post.create')->with('userId' , $userId);
+        $cates = $this->cate->showAll();
+  			return view('post.create')->with(['userId'=>$userId , 'cates'=>$cates]);
   		}else{
   			abort(404);
   		}
@@ -51,15 +54,15 @@ class PostController extends Controller
   	public function store($userId , Request $postRequest){
 
   		 $thumb=null;
-          //lưu ảnh thumbnail
-        if($postRequest->hasFile('thumb')){
-            $thumb = $postRequest->file('thumb');
-            $validate = Validator::make($postRequest->all(),
-               ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
 
+        if($postRequest->file('thumb')){
+            $thumb = $postRequest->file('thumb');
+            /*$validate = Validator::make($postRequest->all(),
+               ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
             if($validate->fails()){
+              echo 'false';die();
                 return redirect()->intended('post/create/'.$userId)->withErrors($validate);
-            }
+            }*/
 
             $path = 'upload/post';
             $fileName = time()."-".$thumb->getClientOriginalName();
@@ -87,7 +90,7 @@ class PostController extends Controller
   	 */
 
   	public function index(){
-  		$posts = $this->post->postPaginateOrderBy('updated_at', 'DESC', 2 , Auth::user()->id);
+  		$posts = $this->post->postPaginateOrderBy('updated_at', 'DESC', 2 , Auth::user()->id);     
   		return view('post.index')->with('posts', $posts);
   	}
 
@@ -131,8 +134,9 @@ class PostController extends Controller
 
   	public function edit($id){
   		$post = $this->post->findId($id);
+      $cates = $this->cate->showAll();
   		if($post){
-  			return view('post.edit')->with('post',$post);
+  			return view('post.edit')->with(['post'=>$post, 'cates'=>$cates]);
   		}else{
   			abort(404);
   		}

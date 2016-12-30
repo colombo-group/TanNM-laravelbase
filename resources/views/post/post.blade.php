@@ -60,7 +60,8 @@
 					@endif
 					<br>
 					<h5>{{ Auth::user()->name}}</h5>
-					<p><small>Created at: {{ $post->created_at }}</small></p>
+					<p><small>Cập nhật lúc: {{ $post->updated_at }}</small></p>
+          <p><small>Danh mục: {{ $post->cates->title }}</small> </p>
 					<a href="{{ route('post.edit',$post->id) }}" class="btn btn-primary btn-sm"><strong>Update</strong></a>
 					<a href="javascript:;" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delModal"><strong>Delete</strong></a>
 				</div>

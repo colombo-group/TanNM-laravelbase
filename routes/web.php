@@ -31,7 +31,12 @@ Route::group([	'middleware' => 'AdminMiddleware'], function () {
 	Route::post('admin/cate/add', 'Admin\CateController@save')->name('admin.cate.add');
 	Route::get('admin/cate/edit/{id}', 'Admin\CateController@edit')->name('admin.cate.edit');
 	Route::post('admin/cate/update/{id}', 'Admin\CateController@update')->name('admin.cate.update');
+	Route::get('admin/cate/{id}', 'Admin\PostController@index')->name('admin.post.index');
 	Route::get('admin/cate/delete/{id}', 'Admin\CateController@delete')->name('admin.cate.delete');
+	Route::get('admin/post/delete/{id}', 'Admin\PostController@delete')->name('admin.post.delete');
+	Route::get('admin/post/{id}','Admin\PostController@show')->name('admin.post.show');
+	Route::get('admin/post/edit/{id}','Admin\PostController@edit')->name('admin.post.edit');
+	Route::post('admin/post/update/{id}','Admin\PostController@update')->name('admin.post.update');
   });  
 Route::get('/page/{id}', 'Front\HomeController@show')->name('front.page.show');
 Route::get('register',function(){
@@ -40,7 +45,8 @@ Route::get('register',function(){
 
 Auth::routes();
 Route::get('cate', 'Front\CateController@index')->name('cate.index');
-Route::get('post/{id}', 'Front\CateController@show')->name('cate.show');
+Route::get('cate/{id}', 'Front\CateController@show')->name('cate.show');
+Route::get('cate/post/{id}', 'Front\CateController@showPost')->name('cate.post.show');
 Route::post('login','Front\UserController@login')->name('submitLogin');
 Route::post('admin/login','Admin\AdminController@submitLogin')->name('admin.submitLogin');
 Route::get('/user/{id}', 'Front\UserController@profile')->where('id', '[0-9]+')->name('user.profile');

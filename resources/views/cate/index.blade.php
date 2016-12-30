@@ -51,40 +51,26 @@
     </div>
 @endif
 	<div class="pages">
-		@foreach($posts as $post)
-		<div class="row clear">
-			<div class="col-sm-12 col-md-1">
-				@if($post->thumb !=null)
-				<img src="{{ asset($post->thumb) }}" alt="" class="img-fluid" style="max-height:150px;">
-				@endif	
-			</div>
-			<div class="col-sm-12 col-md-9">
-				<a href="{{ route('cate.show',$post->id) }}"><h4 class="display-5">{{ $post->title }}</h4></a>
-				<?php 
-				$sort = explode(" ", strip_tags($post->content));
-				$sortContent = [];
-				if(count($sort) > 20){
-					for ($i=0; $i < 20; $i++) { 
-						array_push($sortContent, $sort[$i]);
-					}
-				}
-				else{
-					for ($i=0; $i < count($sort); $i++) { 
-						array_push($sortContent, $sort[$i]);
-					}
-				}
-				?>
-				<p>{!! implode(" ",$sortContent)!!}...</p>
-				<footer class="blockquote-footer">Created at :{{ $post->created_at }}
-
-					<span>Created by: {{ $post->users->name}}</span></footer>
-						</div>
-
-					</div>
-				</div>
-				@endforeach
-			{{ $posts->links('pagination') }}
+			{{ cate($cates ,0 , " ") }}
 		</div>
-		</div>
-		</div>
+	</div>
+</div>
 @endsection
+<?php 
+	function cate($cates , $parentId=0 , $char =""){
+		foreach ($cates as $cate) 
+		{
+			if($cate->parent_id == $parentId){
+			if($cate->posts->count()>0){
+				echo "<li class='list-group-item'><a href='".route('cate.show' ,$cate->id)."'>".$cate->title."(".$cate->posts->count().")</a></li>";
+			}else{
+					echo "<li class='list-group-item'><a href='javascript:;'>".$cate->title."(".$cate->posts->count().")</a></li>";
+			}
+				cate($cates , $cate->id, $char."--");
+
+			}
+			}
+		
+	}
+
+?>

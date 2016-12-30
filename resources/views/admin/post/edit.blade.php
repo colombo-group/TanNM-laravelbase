@@ -1,44 +1,32 @@
-@extends('main')
-@section('title', "| Sửa bài")
-@section('nav-item')
- <li class="nav-item ">
-          <a class="nav-link" href="/" >Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="route('cate.index')">Danh mục</a>
-          </li>
-          <li class="nav-item dropdown active">
-          @if(Auth::check())
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-              @if(Auth::user()->level==0)
-              Admin
-              @else
-              {{ Auth::user()->name}}
-              @endif
-            </a>
-            <div class="dropdown-menu" aria-labelledby="Preview">
-            @if(Auth::user()->level==0)
-              <a href="{{ route('admin.pages')}}" class="dropdown-item">Trang quản trị</a>
-              @endif
-              <a class="dropdown-item" href="{{ route('user.profile',Auth::user()->id) }}">Profile</a>
-              <a class="dropdown-item" href="{{ route('post.index',Auth::user()->id) }}">Posts</a>
-              <a class="dropdown-item" href="{{ route('post.create',Auth::user()->id) }}">Viết bài</a>
-              <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-              document.getElementById('logout-form').submit();">Đăng xuất</a>
-              <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                {{ csrf_field() }}
-              </form>
-            </div>
-
-          </li>
-                    @else
-
-          <li class="nav-item"><a href="{{route('login')}}" class="nav-link">Đăng nhập</a></li> 
-          <li class="nav-item"><a href="{{route('register')}}" class="nav-link">Đăng ký</a></li>
-          @endif  
+@extends('admin.layout')
+@section('nav-item')	
+<li class="nav-item ">
+	<a class="nav-link" href="{{ route('admin.pages') }}" >Pages<span class="sr-only">(current)</span></a>
+</li>
+<li class="nav-item dropdown active">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="route('admin.cate.index')" role="button" aria-haspopup="true" aria-expanded="false">
+							Danh mục
+						</a>
+						<div class="dropdown-menu" aria-labelledby="Preview">
+							<a class="dropdown-item" href="{{ route('admin.cate.index') }}">Tất cả danh mục</a>
+							<a class="dropdown-item" href="{{ route('admin.cate.manage') }}" >Quản lý danh mục</a>
+							
+						</div>
+					</li>
+	<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="route('user.index')" role="button" aria-haspopup="true" aria-expanded="false">
+							User
+						</a>
+						<div class="dropdown-menu" aria-labelledby="Preview">
+							<a class="dropdown-item" href="{{ route('user.index') }}">List</a>
+							<a class="dropdown-item" href="{{ route('admin.recycle') }}" >Recycle</a>
+							
+						</div>
+					</li>
 @endsection
+@section('title','| Categories')
 @section('script')
-<script type='text/javascript' src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
+	<script type='text/javascript' src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
 <script type='text/javascript' src="{{ asset('js/admin.js') }}"></script>
 <script src="/vendor/laravel-filemanager/js/lfm.js"></script>
 @endsection
@@ -47,7 +35,7 @@
 	<div class="content">
 	<h2 class="display-4 align-center">Edit Post</h2>
 		<hr>
-		{{ Form::model($post , ['route'=>['post.update',$post->id] , 'method'=>'post', 'enctype'=>'multipart/form-data']) }}
+		{{ Form::model($post , ['route'=>['admin.post.update',$post->id] , 'method'=>'post', 'enctype'=>'multipart/form-data']) }}
 				{{ csrf_field() }}
 			<div class="form-group row">
 				<label for="title" class="col-xs-2 col-form-label">Tiêu đề</label>
@@ -73,6 +61,7 @@
 				<img src="{{ asset($post->thumb) }}" alt="" class="img-fluid">
 				@endif
 				</div>
+				<h4>{{ $post->users->name }}</h4>
 			</div>
 			<div class="form-group row">
 				<label for="thumb" class="col-xs-2 col-form-label">Ảnh đại diện</label>

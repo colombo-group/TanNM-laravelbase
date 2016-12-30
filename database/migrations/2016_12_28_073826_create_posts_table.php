@@ -14,15 +14,16 @@ class CreatePostsTable extends Migration
     public function up()
     {
         //
-         Schema::create('posts', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('title');
-            $table->text('content');
-            $table->text('user_id');
-            $table->string('thumb')->nullable();
-            $table->timestamps();
-        });
-    }
+       Schema::create('posts', function (Blueprint $table) {
+        $table->increments('id');
+        $table->string('title');
+        $table->text('content');
+        $table->foreign('cate_id')->references('id')->on('cates')->onDelete('cascade');
+        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        $table->string('thumb')->nullable();
+        $table->timestamps();
+    });
+   }
 
     /**
      * Reverse the migrations.
@@ -32,5 +33,6 @@ class CreatePostsTable extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('posts');
     }
 }

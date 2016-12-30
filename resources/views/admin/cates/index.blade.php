@@ -51,8 +51,8 @@
 		foreach ($cates as $cate) 
 		{
 			if($cate->parent_id == $parentId){
-				if($parentId !=0){
-				echo "<li class='list-group-item'><span><a href=''>".$char.$cate->title."</a> </span></li>";
+				if($cate->posts->count()){
+				echo "<li class='list-group-item'><span><a href='".route('admin.post.index',$cate->id)."'>".$char.$cate->title."(".$cate->posts->count().")</a> </span></li>";
 			}else{
 				echo "<li class='list-group-item'><span><a href='jacascript:;	'>".$char.$cate->title."</a> </span></li>";
 

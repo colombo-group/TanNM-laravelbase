@@ -30,5 +30,6 @@ class CreateCatesTable extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('cates');
     }
 }

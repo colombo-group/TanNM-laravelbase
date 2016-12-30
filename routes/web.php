@@ -10,7 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/make',function(){
+            File::mkdir('/public/upload/post/2017'	);
+});
 Route::get('/','Front\HomeController@index');
 
 Route::get('/home','Front\HomeController@Index')->name('home');

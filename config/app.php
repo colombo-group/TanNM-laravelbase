@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Ho_Chi_Minh',
 
     /*
     |--------------------------------------------------------------------------
@@ -162,9 +162,10 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-           Collective\Html\HtmlServiceProvider::class,
-            Unisharp\Laravelfilemanager\LaravelFilemanagerServiceProvider::class,
-    Intervention\Image\ImageServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class,
+        Unisharp\Laravelfilemanager\LaravelFilemanagerServiceProvider::class,
+         Intervention\Image\ImageServiceProvider::class,
+         GrahamCampbell\Flysystem\FlysystemServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -230,6 +231,7 @@ return [
          'Form' => Collective\Html\FormFacade::class,
       'Html' => Collective\Html\HtmlFacade::class,
       'Image' => Intervention\Image\Facades\Image::class,
+      'Flysystem' => GrahamCampbell\Flysystem\Facades\Flysystem::class
     ],
 
 ];

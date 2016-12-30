@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\File;
 use App\Http\Controllers\Controller;
 use Validator;
 use App\Repositories\PageRepository;
+use Carbon\Carbon;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Adapter\Local;
+use Illuminate\Support\Facades\Storage;
 
 class PageController extends Controller
 {
@@ -59,7 +63,13 @@ class PageController extends Controller
 
         $thumb=null;
           //lưu ảnh thumbnail
-        if($pageRequest->hasFile('thumb')){
+        if($pageRequest->file('thumb')){
+            $year = Carbon::now()->year;
+            $month = Carbon::now()->month;
+            $day = Carbon::now()->day;
+            $disk = Storage::disk('public');
+           
+            $store = "pages/$year/$month-$year/$day-$month-$year/";
             $thumb = $pageRequest->file('thumb');
             $validate = Validator::make($pageRequest->all(),
                ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
@@ -67,13 +77,12 @@ class PageController extends Controller
             if($validate->fails()){
                 return redirect()->intended('admin/page/create')->withErrors($validate);
             }
-            $path = 'upload';
-            $fileName = time()."-".$thumb->getClientOriginalName();
-            $thumb->move($path , $fileName); 
-            $thumb = $path."/".$fileName;
+            $fileName = time().".".$thumb->getClientOriginalExtension();
+            $store .=$fileName; 
+            $disk->put($store, File::get($thumb)); 
         }
         //Lưu csdl
-        $page = $this->page->save($pageRequest ,$thumb);
+        $page = $this->page->save($pageRequest ,$store);
         if($page!=false){
             return redirect()->route('page.show',$page);
         }

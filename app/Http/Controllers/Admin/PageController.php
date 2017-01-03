@@ -142,6 +142,7 @@ class PageController extends Controller
     $thumb=null;
           //lưu ảnh thumbnail
     if($pageRequest->hasFile('thumb')){
+        $disk = Storage::disk('public');
         $thumb = $pageRequest->file('thumb');
         $validate = Validator::make($pageRequest->all(),
            ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
@@ -151,13 +152,20 @@ class PageController extends Controller
         }
         $path = 'upload';
         $fileName = time()."-".$thumb->getClientOriginalName();
-        if(File::exists($page->thumb)){
-                    File::delete($page->thumb);}
-                  $thumb->move($path , $fileName); 
-                 $thumb = $path."/".$fileName;
+        if($disk->exists($page->thumb)){
+                   $disk->delete($page->thumb);
+            }
+        $year = Carbon::now()->year;
+            $month = Carbon::now()->month;
+            $day = Carbon::now()->day;
+           
+            $store = "pages/$year/$month-$year/$day-$month-$year/"; 
+              $fileName = time().".".$thumb->getClientOriginalExtension();
+            $store .=$fileName; 
+            $disk->put($store, File::get($thumb)); 
       }
         //Lưu csdl
-        $id = $this->page->update($pageRequest ,$id ,  $thumb );
+        $id = $this->page->update($pageRequest ,$id ,  $store );
         if($id !=false){
             return redirect()->route('page.show',$id);
         }else{

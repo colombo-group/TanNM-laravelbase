@@ -8,7 +8,8 @@ use App\Repositories\CateRepository;
 use App\Repositories\PostRepository;
 use Validator;
 use Illuminate\Support\Facades\File;
-
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 
 class PostController extends Controller
@@ -72,10 +73,17 @@ class PostController extends Controller
         if($validate->fails()){
             return redirect()->route('post.edit',$id)->withErrors($validate);
         }
-
+        $store = null;
         $thumb=null;
           //lưu ảnh thumbnail
         if($postRequest->file('thumb')){
+            $disk = Storage::disk('public');
+            $year = Carbon::now()->year;
+            $month = Carbon::now()->month;
+            $day = Carbon::now()->day;
+            $disk = Storage::disk('public');
+
+            $store = "posts/$year/$month-$year/$day-$month-$year/";
             $thumb = $postRequest->file('thumb');
             $validate = Validator::make($postRequest->all(),
              ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
@@ -83,16 +91,15 @@ class PostController extends Controller
             if($validate->fails()){
                 return redirect()->route('post.edit',$id)->withErrors($validate);
             }
-            $path = 'upload/post';
-            $fileName = time()."-".$thumb->getClientOriginalName();
-            if(File::exists($post->thumb)){
-                File::delete($post->thumb);
+            if($disk->exists($post->thumb) && $post->thumb !=null){
+                $disk->delete($post->thumb);
             }
-            $thumb->move($path , $fileName); 
-            $thumb = $path."/".$fileName;
+            $fileName = time().".".$thumb->getClientOriginalExtension();
+            $store .=$fileName; 
+            $disk->put($store, File::get($thumb)); 
         }
         //Lưu csdl
-        $id = $this->post->update($postRequest ,$id ,  $thumb );
+        $id = $this->post->update($postRequest ,$id ,  $store );
         if($id !=false){
             return redirect()->route('admin.post.show',$id);
         }else{

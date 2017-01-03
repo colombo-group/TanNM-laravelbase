@@ -18,8 +18,8 @@ class CreatePostsTable extends Migration
         $table->increments('id');
         $table->string('title');
         $table->text('content');
-        $table->foreign('cate_id')->references('id')->on('cates')->onDelete('cascade');
-        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        $table->integer('cate_id');
+        $table->integer('user_id');
         $table->string('thumb')->nullable();
         $table->timestamps();
     });

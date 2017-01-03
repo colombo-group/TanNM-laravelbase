@@ -71,11 +71,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <a href="{{route('admin.post.delete' , $post->id) }}" onclick="event.preventDefault();
-							document.getElementById('delete-form').submit();" type="button" class="btn btn-primary">Delete</a>
-        	 {{ Form::open(array('route' => ['admin.post.delete' , $post->id]	, 'class' => 'pull-right', 'style'=>'display:hidden','id'=>'delete-form')) }}
-                    {{ Form::hidden('_method', 'get	') }}
-               {{ Form::close() }}
+        <a href="{{route('admin.post.delete' , $post->id) }}"  type="button" class="btn btn-primary">Delete</a>
       </div>
     </div>
   </div>

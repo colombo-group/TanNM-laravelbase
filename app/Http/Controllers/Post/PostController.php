@@ -10,6 +10,8 @@ use Validator;
 use App\Repositories\CateRepository;
 use Auth;
 use Illuminate\Support\Facades\File;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -52,24 +54,22 @@ class PostController extends Controller
   	 *@return View | error
   	 */
   	public function store($userId , Request $postRequest){
-
+        $year = Carbon::now()->year;
+            $month = Carbon::now()->month;
+            $day = Carbon::now()->day;
+            $disk = Storage::disk('public');
+           $store = null;
   		 $thumb=null;
 
         if($postRequest->file('thumb')){
-            $thumb = $postRequest->file('thumb');
-            /*$validate = Validator::make($postRequest->all(),
-               ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
-            if($validate->fails()){
-              echo 'false';die();
-                return redirect()->intended('post/create/'.$userId)->withErrors($validate);
-            }*/
+            $store = "posts/$year/$month-$year/$day-$month-$year/"; 
 
-            $path = 'upload/post';
+            $thumb = $postRequest->file('thumb');
             $fileName = time()."-".$thumb->getClientOriginalName();
-            $thumb->move($path , $fileName); 
-            $thumb = $path."/".$fileName;
+            $disk->put($store.$fileName , File::get($thumb));
+            $store.=$fileName;
         }
-        $postId = $this->post->save($postRequest , $thumb);
+        $postId = $this->post->save($postRequest , $store);
   		if($postId){
   			return redirect()->route('post.show',$postId);
   		}else{
@@ -119,8 +119,9 @@ class PostController extends Controller
                     File::delete($srcDelThumb);
                 }             
             }    
-            if(File::exists($post->thumb)){
-                File::delete($post->thumb);
+            $disk = Storage::disk('public');
+            if($disk->exists($post->thumb) && $post->thumb !=null){
+                $disk->delete($post->thumb);
             }
             if($this->post->delete($id)){
                 return redirect()->route('post.index')->with('status','Xóa rồi nhé !');
@@ -152,6 +153,7 @@ class PostController extends Controller
      */
     public function update(Request $postRequest, $id)
     {
+
      $post = $this->post->findId($id);
      $validate = Validator::make($postRequest->all(),[
          'title'=>'required|max:255' 
@@ -160,27 +162,33 @@ class PostController extends Controller
      if($validate->fails()){
         return redirect()->route('post.edit',$id)->withErrors($validate);
     }
-
+    $store = null;
     $thumb=null;
           //lưu ảnh thumbnail
     if($postRequest->file('thumb')){
-        $thumb = $postRequest->file('thumb');
-        $validate = Validator::make($postRequest->all(),
+       $year = Carbon::now()->year;
+            $month = Carbon::now()->month;
+            $day = Carbon::now()->day;
+            $disk = Storage::disk('public');
+           
+            $store = "posts/$year/$month-$year/$day-$month-$year/"; 
+          $thumb = $postRequest->file('thumb');
+          $validate = Validator::make($postRequest->all(),
            ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
 
         if($validate->fails()){
             return redirect()->route('post.edit',$id)->withErrors($validate);
         }
-        $path = 'upload/post';
         $fileName = time()."-".$thumb->getClientOriginalName();
-        if(File::exists($post->thumb)){
-                    File::delete($post->thumb);
+        $store .=$fileName; 
+          if($disk->exists($post->thumb) && $post->thumb !=null){
+            $disk->delete($post->thumb);
           }
-                	 $thumb->move($path , $fileName); 
-                	 $thumb = $path."/".$fileName;
+
+            $disk->put($store.$fileName, File::get($thumb));
       }
         //Lưu csdl
-        $id = $this->post->update($postRequest ,$id ,  $thumb );
+        $id = $this->post->update($postRequest ,$id ,   $store );
         if($id !=false){
             return redirect()->route('post.show',$id);
         }else{

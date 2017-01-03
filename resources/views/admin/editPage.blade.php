@@ -35,7 +35,7 @@
 	<div class="content">
 	<h2 class="display-4 align-center">Edit Page</h2>
 		<hr>
-		{{ Form::model($page , ['route'=>['page.update',$page->id] , 'method'=>'PATCH', 'enctype'=>'multipart/form-data']) }}
+		{{ Form::model($page , ['route'=>['page.update',$page->id] , 'method'=>'PATCH', 'enctype'=>'multipart/form-data' ,'novalidate']) }}
 				{{ csrf_field() }}
 			<div class="form-group row">
 				<label for="title" class="col-xs-2 col-form-label">Tiêu đề</label>

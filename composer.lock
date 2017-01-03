@@ -162,23 +162,23 @@
         },
         {
             "name": "graham-campbell/flysystem",
-            "version": "v3.5.0",
+            "version": "v3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GrahamCampbell/Laravel-Flysystem.git",
-                "reference": "a3d69206a67ce1b68e867dbc0ea30a88c5992b40"
+                "reference": "91825d146a1301260e7d856ec54a12aeb7976065"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GrahamCampbell/Laravel-Flysystem/zipball/a3d69206a67ce1b68e867dbc0ea30a88c5992b40",
-                "reference": "a3d69206a67ce1b68e867dbc0ea30a88c5992b40",
+                "url": "https://api.github.com/repos/GrahamCampbell/Laravel-Flysystem/zipball/91825d146a1301260e7d856ec54a12aeb7976065",
+                "reference": "91825d146a1301260e7d856ec54a12aeb7976065",
                 "shasum": ""
             },
             "require": {
                 "graham-campbell/manager": "^2.3",
-                "illuminate/cache": "5.1.*|5.2.*|5.3.*",
-                "illuminate/contracts": "5.1.*|5.2.*|5.3.*",
-                "illuminate/support": "5.1.*|5.2.*|5.3.*",
+                "illuminate/cache": "5.1.*|5.2.*|5.3.*|5.4.*",
+                "illuminate/contracts": "5.1.*|5.2.*|5.3.*|5.4.*",
+                "illuminate/support": "5.1.*|5.2.*|5.3.*|5.4.*",
                 "league/flysystem": "^1.0",
                 "php": ">=5.5.9"
             },
@@ -215,7 +215,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.5-dev"
+                    "dev-master": "3.6-dev"
                 }
             },
             "autoload": {
@@ -247,25 +247,25 @@
                 "laravel",
                 "s3"
             ],
-            "time": "2016-08-28T09:18:27+00:00"
+            "time": "2017-01-01T13:14:12+00:00"
         },
         {
             "name": "graham-campbell/manager",
-            "version": "v2.4.0",
+            "version": "v2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GrahamCampbell/Laravel-Manager.git",
-                "reference": "fd9052082e2c69c9a67d3e8d7dfa94cb33f8ab0b"
+                "reference": "e6ab47a8971da6fd18bc7ced546f0d24cb7ebe3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GrahamCampbell/Laravel-Manager/zipball/fd9052082e2c69c9a67d3e8d7dfa94cb33f8ab0b",
-                "reference": "fd9052082e2c69c9a67d3e8d7dfa94cb33f8ab0b",
+                "url": "https://api.github.com/repos/GrahamCampbell/Laravel-Manager/zipball/e6ab47a8971da6fd18bc7ced546f0d24cb7ebe3a",
+                "reference": "e6ab47a8971da6fd18bc7ced546f0d24cb7ebe3a",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "5.1.*|5.2.*|5.3.*",
-                "illuminate/support": "5.1.*|5.2.*|5.3.*",
+                "illuminate/contracts": "5.1.*|5.2.*|5.3.*|5.4.*",
+                "illuminate/support": "5.1.*|5.2.*|5.3.*|5.4.*",
                 "php": ">=5.5.9"
             },
             "require-dev": {
@@ -276,7 +276,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -306,7 +306,7 @@
                 "laravel",
                 "manager"
             ],
-            "time": "2016-04-26T14:27:59+00:00"
+            "time": "2017-01-01T13:08:54+00:00"
         },
         {
             "name": "guzzlehttp/psr7",

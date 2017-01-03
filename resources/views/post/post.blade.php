@@ -46,27 +46,29 @@
 	<div class="container wrapper">
 		<div class="content">
 			<div class="row">
-				<h4 class="display-4">{{ $post->title }}</h4>
+      <div class="col-xs-12">
+				<h4 class="display-5">{{ $post->title }}</h4>
+        <p>by <a href="javascript:;">{{$post->users->name }}</a></p>
 				<hr>
-				<br>
 				@if (session('status'))
     <div class="alert alert-success">
         {{ session('status') }}
     </div>
-@endif
-				<div class="col-sm-12 col-md-2">
-					@if($post->thumb!=null)
-						<img src="{{ asset($post->thumb) }}" alt="Thumb" class="img-fluid" >
-					@endif
-					<br>
-					<h5>{{ Auth::user()->name}}</h5>
-					<p><small>Cập nhật lúc: {{ $post->updated_at }}</small></p>
-          <p><small>Danh mục: {{ $post->cates->title }}</small> </p>
-					<a href="{{ route('post.edit',$post->id) }}" class="btn btn-primary btn-sm"><strong>Update</strong></a>
-					<a href="javascript:;" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delModal"><strong>Delete</strong></a>
-				</div>
-				<div class="col-sm-12 col-md-10">
+    @endif
+    </div>
+        <div class="col-xs-12">
+          <p>posted on : {{ $post->created_at}}</p>
+          <hr>
+        </div>
+				
+				<div class="col-sm-12 col-md-12">
+          <img src="{{ asset('storage/'.$post->thumb )}}" class="image-resposive">
+
 					{!! $post->content !!}
+          
+          
+        
+
 				</div>
 			</div>
 		</div>

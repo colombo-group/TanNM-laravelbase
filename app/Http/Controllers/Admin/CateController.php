@@ -29,6 +29,11 @@ class CateController extends Controller
         return view('admin.cates.index')->with('cates', $cates);    
     }
 
+    public function showCate(){
+        $cates = $this->cate->showAll();
+        return view('cate')->with('cates', $cates);    
+    }
+
      /**
      *hàm hiển thị tất cả danh mục
      *@return  view  

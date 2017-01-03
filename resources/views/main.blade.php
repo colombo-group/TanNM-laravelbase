@@ -29,7 +29,11 @@
 	</div>		
 </div>
 <div class="container">
-	@yield('content')
+	<div class="col-sm-9 col-xs-12">
+		@yield('content')
+	</div>
+	<div class="col-sm-3 col-xs-12 cate" style="margin-top: 80px;">
+	</div>
 </div>
 
 <footer id="footer">

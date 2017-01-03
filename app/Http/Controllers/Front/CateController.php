@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\CateRepository;
 use App\Repositories\PostRepository;
-
+use App\Repositories\CommentRepository;
 
 class CateController extends Controller
 {
@@ -14,9 +14,12 @@ class CateController extends Controller
 
 	protected $cate;
   protected $post;
+  protected $comment;
+
 	function __construct(){
     $this->cate = new CateRepository;
 		$this->post = new PostRepository;
+    $this->comment = new CommentRepository;
 	}
     /**
      * show post
@@ -39,6 +42,7 @@ class CateController extends Controller
 
     public function showPost($id){
       $post= $this->post->findId($id);
-      return view('cate.showPost')->with('post', $post);
+      $comments = $post->comments->all();
+      return view('cate.showPost')->with(['post'=> $post , 'comments'=>$comments]);
     }
 }

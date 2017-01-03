@@ -16,5 +16,9 @@ class Post extends Model
 
     public function cates(){
     	return $this->belongsTo('App\Models\Cate' , 'cate_id');
+    } 
+
+     public function comments(){
+    	return $this->hasMany('App\Models\Comment');
     }
 }

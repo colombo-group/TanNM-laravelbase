@@ -41,33 +41,89 @@
 @endsection
 @section('script')
 <script type="text/javascript" src="{{ asset('js/page.js') }}"></script>
+<script type="text/javascript" src='{{ asset('js/comment.js') }}'></script>
 @endsection
 @section('content')
 	<div class="container wrapper">
-		<div class="content">
-			<div class="row">
-				<h4 class="display-4">{{ $post->title }}</h4>
-				<hr>
-				<br>
-				@if (session('status'))
-    <div class="alert alert-success">
-        {{ session('status') }}
+    <div class="content">
+      <div class="row">
+      <div class="col-xs-12">
+        <h4 class="display-5">{{ $post->title }}</h4>
+        <p>by <a href="javascript:;">{{$post->users->name }}</a></p>
+        <hr>
+       <input type="hidden" name="postId" value="{{ $post->id}}" id='postId'>
     </div>
-@endif
-				<div class="col-sm-12 col-md-2">
-					@if($post->thumb!=null)
-						<img src="{{ asset($post->thumb) }}" alt="Thumb" class="img-fluid" >
-					@endif
-					<br>
-					<h5>{{ $post->users->name }}</h5>
-					<p><small>Cập nhật lúc: {{ $post->updated_at }}</small></p>
-          <p><small>Danh mục: {{ $post->cates->title }}</small> </p>
-				</div>
-				<div class="col-sm-12 col-md-10">
-					{!! $post->content !!}
-				</div>
-			</div>
-		</div>
-	</div>
-	
+        <div class="col-xs-12">
+          <p>Posted on : {{ $post->created_at}}</p>
+          <hr>
+          <img src="{{ asset('storage/'.$post->thumb )}}" class="image-resposive">
+
+        </div>
+                
+        <div class="col-sm-12 col-md-12">
+          {!! $post->content !!}
+          
+          <div class="comment">
+            <div class="col-xs-12 xs-offset-1">
+            @if(Auth::user())
+              <form action="javascript:; " method="POST" class='comment-form'>
+              {{ csrf_field() }}
+                <input type="hidden" name="comment_parent" value='0'>
+                <input type="hidden" name="userId" value='{{ Auth::user()->id}}'>
+                <input type="hidden" name="postId" value='{{ $post->id}}'>
+                <div class="form-group">
+                  <label><h5>Comment</h5></label>
+                   <textarea class="form-control" rows="4" required name="content"></textarea> 
+                </div>
+                <button class="btn btn-primary" id="comment-form-button" >Comment</button>
+              </form>
+             @else
+             <p>Đăng nhập để bình luận</p>
+             @endif 
+            </div>   
+          </div>  
+          <div class="comment-section">
+          @foreach($comments as $comment)
+            @if($comment->parent_id ==0)
+              <div class="first-comment">
+                <span>
+                  <strong>{{ $comment->users->name }}</strong>
+                </span>
+                <small class='text-muted'>
+                  {{ date_format($comment->created_at, 'Y-m-d h:m:i') }}
+                </small>
+                <p>
+                  {{ $comment->content }}
+                      <a href="javascript:;" class='comment-button' commentId ='{{ $comment->id }}'>Trả lời</a>
+                </p>
+                <div class='second-comment-section' parentCommentSection="{{ $comment->id }}">
+            @endif
+            @foreach($comments as $key=>$value)
+              @if($value->parent_id == $comment->id)
+                <div class="second-comment">
+                  <span>
+                    <strong>{{ $value->users->name }}</strong>
+                  </span>
+                  <small class='text-muted'>
+                    {{  date_format($value->created_at, 'Y-m-d h:m:i') }}
+                  </small>
+                  <p>
+                    {{ $value->content }}
+                  </p>
+                </div>
+              @endif
+
+            @endforeach
+            </div>
+            </div>
+          @endforeach
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection
+<script type="text/javascript">
+  var token = "{{ Session::token() }}";
+  var url = "{{ route('comment.store')}}";
+</script>

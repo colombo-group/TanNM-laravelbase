@@ -1,7 +1,7 @@
 $('document').ready(function(){
 	$('.comment-form').on('submit',function(){
 		var data = new FormData(this);
-		$(this).children('textarea').val("dkfndskf");
+
 		 $.ajaxSetup({
        			headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
    		 })
@@ -10,11 +10,13 @@ $('document').ready(function(){
 			url: url,
 			dataType: 'json',
 			data: {
-				content : data.get('content'),
+			 	content : data.get('content'),
 				parentId : data.get('comment_parent'),
 				postId : data.get('postId'),
-				userId : data.get('userId')
-			},
+				userId : data.get('userId')}
+			,
+			contentType:false,
+			processData :false,
 			success: function(rs){
 				if(rs){
 					loadMore(rs);

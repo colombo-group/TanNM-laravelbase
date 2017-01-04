@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use Auth;
+use App\Repositories\UserRepository;
 /**
  *@author nguyenminhtan<nguyenminhtan893@gmail.com>
  * class sử lý user
@@ -14,7 +15,10 @@ use Auth;
 class UserController extends Controller
 {
 
-
+    protected $user;
+    function __construct(){
+        $this->user = new UserRepository;
+    }
     /**
       * hàm login bằng username hoặc email  
      */
@@ -50,7 +54,7 @@ class UserController extends Controller
     public function profile($id){
 
     	//kiểm tra id có tồn tại không
-    	$user = $this->post->find($id);
+    	$user = $this->user->findId($id);
     	if($user != null){
     		return view('profile')->with('user',$user);
     	}

@@ -105,7 +105,7 @@
                <small class='text-muted'>{{ $value->created_at }}</small>
                <p>{{ $value->content }}</p>
               </div>
-              <?php unset($comments[$key]);  ?>
+              <?php unset($comments[$key]); ?>
               @endif
              @endforeach
 
@@ -117,6 +117,15 @@
 
     </div>
   </div>
+</div>
+@endsection
+
+@section('cate')
+<div class="col-xs-12 ">
+  <h4>Danh mục</h4>
+  @foreach($cate as $key)
+    <a href="{{ route('cate.show' , $key->id) }}" class='cate-link'>{{ $key->title }}</a>
+  @endforeach
 </div>
 @endsection
 <script type="text/javascript">

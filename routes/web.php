@@ -15,7 +15,6 @@ Route::get('/','Front\HomeController@index');
 Route::get('/home','Front\HomeController@Index')->name('home');
 Route::get('admin/login' , 'Admin\AdminController@showLogin');
 
-
 //Route:: admin
 Route::group([	'middleware' => 'AdminMiddleware'], function () {
     Route::get('/admin','Admin\AdminController@index')->name('admin.pages');

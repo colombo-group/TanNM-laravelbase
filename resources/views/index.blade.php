@@ -78,3 +78,12 @@
 <div class="align-center">{{ $pages->links('pagination') }}</div>
 </div>
 @endsection
+
+@section('cate')
+<div class="col-xs-12 ">
+  <h4>Danh mục</h4>
+  @foreach($cate as $key)
+    <a href="{{ route('cate.show' , $key->id) }}" class='cate-link'>{{ $key->title }}</a>
+  @endforeach
+</div>
+@endsection

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Input;
+use Intervention\Image\ImageServiceProvider ;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Http\Controllers\Controller;
@@ -70,16 +72,16 @@ class PageController extends Controller
             $disk = Storage::disk('public');
            
             $store = "pages/$year/$month-$year/$day-$month-$year/";
-            $thumb = $pageRequest->file('thumb');
+            $thumb = \Image::make(Input::file('thumb'))->resize(120,120);
             $validate = Validator::make($pageRequest->all(),
                ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
 
             if($validate->fails()){
                 return redirect()->intended('admin/page/create')->withErrors($validate);
             }
-             $fileName = time().".".$thumb->getClientOriginalExtension();
+             $fileName = time().".".$pageRequest->file('thumb')->getClientOriginalExtension();
              $store .=$fileName;
-            $disk->put($store, File::get($thumb)); 
+             $thumb->save(storage_path('app/public/' . $store));
         }
         //Lưu csdl
         $page = $this->page->save($pageRequest ,$store);

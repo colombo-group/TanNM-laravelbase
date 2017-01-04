@@ -31,9 +31,10 @@ class CateController extends Controller
 
     public function show($id){
    		$cate = $this->cate->findId($id);
+      $cates  = $this->cate->showAll();
    		if($cate){
         $posts = $cate->posts()->orderBy('updated_at','DESC')->paginate(2);
-   			return view('cate.cateShow')->with(['cate'=>$cate, 'posts'=>$posts]);
+   			return view('cate.cateShow')->with(['cate'=>$cate, 'posts'=>$posts , 'cates'=>$cates]);
    		}
    		else{
    			abort(404);

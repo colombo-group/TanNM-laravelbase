@@ -36,7 +36,9 @@ section,
 summary {
   display: block;
 }
-
+.cate-link{
+  margin-right: 20px;
+}
 audio,
 canvas,
 progress,

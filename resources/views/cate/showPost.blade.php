@@ -55,11 +55,12 @@
     <div class="col-xs-12">
       <p>Posted on : {{ $post->created_at}}</p>
       <hr>
-      <img src="{{ asset('storage/'.$post->thumb )}}" class="image-resposive">
+      
     </div>
 
-    <div class="col-sm-12 col-md-12">
+    <div class="col-sm-12 col-md-12 main">
       {!! $post->content !!}
+      </div>
         <div class="col-xs-12 xs-offset-1">
           @if(Auth::user())
           <form action="javascript:; " method="POST" class='comment-form'>

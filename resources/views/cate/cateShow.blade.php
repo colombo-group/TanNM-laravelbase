@@ -51,11 +51,13 @@
   <div class="row title" style="margin-top:30px;">
     <div class="col-xs-12 col-sm-2">
       @if($post->thumb !=null)
-      <img src="{{ asset('storage/'.$post->thumb)}}" alt="" style="height: 140px; width:100px; ">
+        <img src="{{ asset('storage/'.$post->thumb)}}">
+      @else
+        <img src="{{ asset('default.jpg') }}">
       @endif
     </div>
     <div class="col-xs-12 col-sm-10">
-      <a href="{{ route('front.page.show',$post->id) }}"><h4 class="display-5">{{ $post->title }}</h4></a>
+      <a href="{{ route('cate.post.show',$post->id) }}"><h4 class="display-5">{{ $post->title }}</h4></a>
       <?php 
       $sort = explode(" ", strip_tags($post->content));
       $sortContent = [];
@@ -71,7 +73,7 @@
       }
       ?>
       <p style="width:80%">{!! implode(" ",$sortContent)!!}...</p>
-      <footer class="blockquote-footer">Created at :{{ $post->created_at }}</footer>
+      <footer class="blockquote-footer">Tạo lúc :{{ $post->created_at }} bởi: {{ $post->users->name }}</footer>
     </div>
   </div>
   @endforeach

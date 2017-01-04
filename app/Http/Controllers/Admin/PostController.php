@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Intervention\Image\ImageServiceProvider ;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\CateRepository;
@@ -84,7 +85,7 @@ class PostController extends Controller
             $disk = Storage::disk('public');
 
             $store = "posts/$year/$month-$year/$day-$month-$year/";
-            $thumb = $postRequest->file('thumb');
+            $thumb = Image::make($postRequest->file('thumb'))->resize(120,120);
             $validate = Validator::make($postRequest->all(),
              ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
 
@@ -94,9 +95,10 @@ class PostController extends Controller
             if($disk->exists($post->thumb) && $post->thumb !=null){
                 $disk->delete($post->thumb);
             }
-            $fileName = time().".".$thumb->getClientOriginalExtension();
+            $fileName = time().".".$postRequest->file('thumb')->getClientOriginalExtension();
             $store .=$fileName; 
-            $disk->put($store, File::get($thumb)); 
+
+            $thumb->save(storage_path("app/public/".$store));
         }
         //Lưu csdl
         $id = $this->post->update($postRequest ,$id ,  $store );

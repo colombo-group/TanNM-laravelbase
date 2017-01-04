@@ -40,7 +40,7 @@
 		<div class="row clear">
 			<div class="col-sm-12 col-md-1">
 				@if($page->thumb !=null)
-				<img src="{{ asset('storage/'.$page->thumb)}}" alt="" class="img-fluid" style="max-height:150px;">
+				<img src="{{ asset('storage/'.$page->thumb)}}">
 				@endif	
 			</div>
 			<div class="col-sm-12 col-md-9">

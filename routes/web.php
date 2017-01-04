@@ -64,3 +64,6 @@ Route::group(['middleware'=>'auth'],function(){
 
 	Route::post('comment/store','Front\CommentController@store')->name('comment.store');
 });
+	Route::get('comment/store','Front\CommentController@getCommentParent')->name('comment.loadCommentParent');
+	Route::get('comment/dfsdf','Front\CommentController@getCommentParentMore')->name('comment.loadCommentParentMore');
+	Route::get('comment/fssfsfdf','Front\CommentController@getCommentChildMore')->name('comment.loadCommentChildMore');

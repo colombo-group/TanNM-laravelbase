@@ -1,12 +1,13 @@
 <?php 
-	
-	namespace App\Repositories;
 
-	use App\Models\User;
-	use App\Models\Post;
-	use App\Repositories\RepositoryInterface;
+namespace App\Repositories;
 
-	class PostRepository implements RepositoryInterface{
+use App\Models\User;
+use App\Models\Post;
+use App\Repositories\RepositoryInterface;
+use Illuminate\Http\Request;
+
+class PostRepository implements RepositoryInterface{
 	/**
 	 * function tìm kiếm post theo ID
 	 *@param int $id id của post
@@ -30,16 +31,16 @@
 			return false;
 		}
 	}
-    
+
 
     /**
 	 * function xóa post  theo ID
 	 *@param int $id id của post
 	 *@return object
 	 */
-	public function forceDel($id){
-		
-	}
+    public function forceDel($id){
+
+    }
 
 
 		/**
@@ -113,4 +114,4 @@
 		
 	}
 
-?>
+	?>

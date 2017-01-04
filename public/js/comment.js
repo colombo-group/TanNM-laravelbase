@@ -1,4 +1,5 @@
 $('document').ready(function(){
+	disableLink();
 	$('.comment-form').on('submit',function(){
 		var data = new FormData(this);
 
@@ -10,13 +11,11 @@ $('document').ready(function(){
 			url: url,
 			dataType: 'json',
 			data: {
-			 	content : data.get('content'),
-				parentId : data.get('comment_parent'),
+			 	content :data.get('content'),
+				parentId:data.get('comment_parent'),
 				postId : data.get('postId'),
-				userId : data.get('userId')}
-			,
-			contentType:false,
-			processData :false,
+				userId : data.get('userId')
+			},
 			success: function(rs){
 				if(rs){
 					loadMore(rs);
@@ -101,4 +100,10 @@ function loadMore(rs){
 			}
 		});
 	}
+}
+
+function disableLink(){
+	$('.main a').each(function(){
+		$(this).attr('href','javascript:;');
+	})
 }

@@ -112,6 +112,7 @@ use Auth;
 			}
 			else{
 				$comment->post_id = $input->postId;
+				$comment->page_id = null;
 			}
 			$comment->page_id = $input->pageId;
 			if($comment->save()){

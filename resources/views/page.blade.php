@@ -57,11 +57,12 @@
     <div class="col-xs-12">
       <p>Posted on : {{ $page->created_at}}</p>
       <hr>
-      <img src="{{ asset('storage/'.$page->thumb )}}" class="image-resposive">
+     
     </div>
 
-    <div class="col-sm-12 col-md-12">
+    <div class="col-sm-12 col-md-12 main">
       {!! $page->content !!}
+      </div>
         <div class="col-xs-12 xs-offset-1">
           @if(Auth::user())
           <form action="javascript:; " method="POST" class='comment-form'>
@@ -80,42 +81,48 @@
           <p>Đăng nhập để bình luận</p>
           @endif 
         </div>   
-    </div>
 
     <div class="col-sm-12 comment-section">
        <hr>
-
+        <?php  $i=0;?>
        @foreach($comments as $comment)
-        
         @if($comment->parent_id == 0 )
+          <?php $i++; ?>
             <div class="col-xs-12 first-comment">
               <span>
                 <strong>{{ $comment->users->name }}</strong>
               </span>
-              <small class='text-muted'>&#32;&#32;&#32;&#32; {{ $comment->created_at }}</small>
-              <p>{{ $comment->content }}<a href="javascript:;" class='comment-button' commentId="{{ $comment->id}}">&#32;&#32;&#32;&#32; Trả lời</a></p>
+              <small class='text-muted'></small>
+              <p>{{ $comment->content }}<a href="javascript:;" class='comment-button' comment-Id="{{ $comment->id}}"> Trả lời</a></p>
               <div class="child-comment col-xs-10 col-offset-2" parent-section='{{ $comment->id}}'>
-                
-             @foreach($comments as $key => $value)
-               @if($value->parent_id == $comment->id) 
-              <div class="col-xs-12">
-                <span>
-                <strong>{{ $value->users->name }}</strong>
-                </span>
-               <small class='text-muted'>{{ $value->created_at }}</small>
-               <p>{{ $value->content }}</p>
-              </div>
-              <?php unset($comments[$key]); ?>
-              @endif
-             @endforeach
 
+          <?php  $j=0;?>
+          
+          @foreach($comments as $key => $value)
+            @if($value->parent_id == $comment->id) 
+            <?php $j++; ?>
+           <div class="col-xs-12 second"  commentChild-id={{ $value->id }}>
+             <span>
+             <strong>{{ $value->users->name }}</strong>
+             </span>
+            <small class='text-muted'></small>
+            <p>{{ $value->content }}</p>
+           </div>
+           <?php unset($comments[$key]); ?>
+           @endif
+        <?php if($j==2){break;} ?>
+
+          @endforeach
              </div>
              </div>
         @endif
-
+        <?php if($i==5){ echo "<input type='hidden' value='".$comment->id."' id='start'>";   break;} ?>
        @endforeach
-
+       
     </div>
+     @if($commentParent>5)
+          <a href="javascript:;"  id='loadMoreParent'>Thêm</a>
+        @endif
   </div>
 </div>
 @endsection
@@ -131,4 +138,7 @@
 <script type="text/javascript">
   var token = "{{ Session::token() }}";
   var url = "{{ route('comment.store')}}";
+  var url1 = "{{ route('comment.loadCommentParent')}}";
+  var url2 = "{{ route('comment.loadCommentParentMore')}}";
+  var url3 = "{{ route('comment.loadCommentChildMore')}}";
 </script>

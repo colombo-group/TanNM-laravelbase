@@ -13,7 +13,7 @@ class HomeController extends Controller
 {
 
     protected $page;
-    protected $comment;
+    protected $commens;
     protected $cate;
     /**
      * Create a new controller instance.
@@ -24,7 +24,7 @@ class HomeController extends Controller
     {
         //$this->middleware('auth');
         $this->page = $page;
-        $this->comment = new CommentRepository;
+        $this->comments = new CommentRepository;
         $this->cate = new CateRepository;
 
     }
@@ -45,9 +45,9 @@ class HomeController extends Controller
         $page = $this->page->findId($id);
         $comment = $page->comments->all();
         $cate=$this->cate->showAll(); 
-
-        if($page){
-            return view('page')->with(['page'=>$page, 'comments'=>$comment, 'cate'=>$cate]);
+        $commentParent = $page->comments->where('parent_id' , '=' , 0);
+       if($page){
+            return view('page')->with(['page'=>$page, 'comments'=>$comment, 'cate'=>$cate , 'commentParent'=>$commentParent->count()]);
         }else{
             abort(404);
         }

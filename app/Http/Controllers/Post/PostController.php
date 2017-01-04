@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Post;
 
+use Intervention\Image\ImageServiceProvider ;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
@@ -63,10 +64,9 @@ class PostController extends Controller
 
         if($postRequest->file('thumb')){
             $store = "posts/$year/$month-$year/$day-$month-$year/"; 
-
-            $thumb = $postRequest->file('thumb');
-            $fileName = time()."-".$thumb->getClientOriginalName();
-            $disk->put($store.$fileName , File::get($thumb));
+            $thumb = \Image::make($postRequest->file('thumb'))->resize(120,120);
+            $fileName = time()."-".$postRequest->file('thumb')->getClientOriginalName();
+            $thumb->save(storage_path('app/public/' . $store.$fileName));
             $store.=$fileName;
         }
         $postId = $this->post->save($postRequest , $store);
@@ -172,20 +172,20 @@ class PostController extends Controller
             $disk = Storage::disk('public');
            
             $store = "posts/$year/$month-$year/$day-$month-$year/"; 
-          $thumb = $postRequest->file('thumb');
+          $thumb = \Image::make($postRequest->file('thumb'))->resize(120,120);
           $validate = Validator::make($postRequest->all(),
            ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
 
         if($validate->fails()){
             return redirect()->route('post.edit',$id)->withErrors($validate);
         }
-        $fileName = time()."-".$thumb->getClientOriginalName();
+        $fileName = time()."-".$postRequest->file('thumb')->getClientOriginalName();
         $store .=$fileName; 
           if($disk->exists($post->thumb) && $post->thumb !=null){
             $disk->delete($post->thumb);
           }
 
-            $disk->put($store.$fileName, File::get($thumb));
+            $thumb->save(storage_path('app/public/'.$store.$fileName));
       }
         //Lưu csdl
         $id = $this->post->update($postRequest ,$id ,   $store );

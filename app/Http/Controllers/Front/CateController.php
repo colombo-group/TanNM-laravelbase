@@ -43,7 +43,7 @@ class CateController extends Controller
 
     public function showPost($id){
       $post= $this->post->findId($id);
-      $comments = $post->comments->all();
-      return view('cate.showPost')->with(['post'=> $post , 'comments'=>$comments]);
+      $comment = $post->comments->all();
+      return view('cate.showPost')->with(['post'=> $post , 'comments'=>$comment]);
     }
 }

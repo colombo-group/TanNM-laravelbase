@@ -58,9 +58,9 @@
 	<div class="pages">
 		@foreach($posts as $post)
 		<div class="row clear">
-			<div class="col-sm-12 col-md-1">
+			<div class="col-sm-12 col-md-2">
 				@if($post->thumb !=null)
-				<img src="{{ asset($post->thumb) }}" alt="" class="img-fluid" style="max-height:150px;">
+				<img src="{{ asset('storage/'.$post->thumb) }}">
 				@endif	
 			</div>
 			<div class="col-sm-12 col-md-9">

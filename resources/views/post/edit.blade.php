@@ -70,7 +70,7 @@
 			<div class="form-group row">
 				<div class="col-xs-2">
 				@if($post->thumb!=null)
-				<img src="{{ asset($post->thumb) }}" alt="" class="img-fluid">
+				<img src="{{ asset('storage/'.$post->thumb) }}" alt="" class="img-fluid">
 				@endif
 				</div>
 			</div>

@@ -24,7 +24,12 @@ class CommentController extends Controller
      */
     public function store(Request $comment){
     	$rs['status'] = null;
-    	$comment = $this->comment->save($comment , null);
+
+        if($comment->input('postId') == ""){
+    	$comment = $this->comment->save($comment , true);
+    }else{
+        $comment = $this->comment->save($comment , null);
+    }
     	if($comment){
     		$rs['content'] = $comment->content;
     		$rs['user'] = $comment->users->name;

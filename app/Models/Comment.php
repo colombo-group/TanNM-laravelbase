@@ -16,4 +16,10 @@ class Comment extends Model
     public function users(){
     	return $this->belongsTo('App\Models\User','user_id');
     }
+
+
+    public function pages(){
+    	return $this->belongsTo('App\Models\Page','page_id');
+    }
+
 }

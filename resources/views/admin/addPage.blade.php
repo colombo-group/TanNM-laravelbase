@@ -33,7 +33,7 @@
 @section('content')
 <div class="container">
 	<div class="content">
-	<h2 class="display-4 align-center">New Page</h2>
+	<h2 class="display-4 align-center">Bài mới</h2>
 		<hr>
 		<form action="{{ route('page.store') }}" method='POST' enctype="multipart/form-data" novalidate>
 			
@@ -65,7 +65,7 @@
 				</div>
 			</div>
 			<br>
-			<button type='submit' class='btn btn-success btn-lg'>Create</button>
+			<button type='submit' class='btn btn-success btn-lg'>Tạo</button>
 		</form>
 	</div>
 </div>

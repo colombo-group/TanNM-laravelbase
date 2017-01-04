@@ -28,11 +28,11 @@
 
 @section('content')
 <div class="content">
-	<h2 class="display-3 align-center">Pages</h2>
+	<h2 class="display-3 align-center">Bài viết</h2>
 	<hr>
 	<div class="row">
 		<div class="float-xs-right">
-			<a href="{{ route('page.create') }}" class="btn btn-info btn-sm">Add Page</a>
+			<a href="{{ route('page.create') }}" class="btn btn-info btn-sm">Thêm bài</a>
 		</div>
 	</div>	
 	<div class="pages">
@@ -60,10 +60,10 @@
 				}
 				?>
 				<p>{!! implode(" ",$sortContent)!!}...</p>
-				<footer class="blockquote-footer">Created at :{{ $page->created_at }}
+				<footer class="blockquote-footer">Tạo lúc:{{ $page->created_at }}
 
-					<span><a href="{{ route('page.edit',$page->id) }}" class="btn btn-primary btn-sm"><strong>Update</strong></a>
-						<a href="javascript:;" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delModal"><strong>Delete</strong></a></span></footer>
+					<span><a href="{{ route('page.edit',$page->id) }}" class="btn btn-primary btn-sm"><strong>Sửa</strong></a>
+						<a href="javascript:;" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delModal"><strong>Xóa</strong></a></span></footer>
 						<div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 							<div class="modal-dialog" role="document">
 								<div class="modal-content">

@@ -39,13 +39,13 @@
 				<br>
 				<div class="col-sm-12 col-md-2">
 					@if($page->thumb!=null)
-						<img src="{{ asset($page->thumb) }}" alt="Thumb" class="img-fluid" >
+						<img src="{{ asset('storage/'.$page->thumb) }}" alt="Thumb" class="img-fluid" >
 					@endif
 					<br>
 					<h5>Administrator</h5>
-					<p><small>Created at: {{ $page->created_at }}</small></p>
-					<a href="{{ route('page.edit',$page->id) }}" class="btn btn-primary btn-sm"><strong>Update</strong></a>
-					<a href="javascript:;" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delModal"><strong>Delete</strong></a>
+					<p><small>Tạo lúc: {{ $page->created_at }}</small></p>
+					<a href="{{ route('page.edit',$page->id) }}" class="btn btn-primary btn-sm"><strong>Sửa</strong></a>
+					<a href="javascript:;" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delModal"><strong>Xóa</strong></a>
 				</div>
 				<div class="col-sm-12 col-md-10">
 					{!! $page->content !!}

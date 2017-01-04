@@ -58,7 +58,7 @@
 			<div class="form-group row">
 				<div class="col-xs-2">
 				@if($post->thumb!=null)
-				<img src="{{ asset($post->thumb) }}" alt="" class="img-fluid">
+				<img src="{{ asset('storage/'.$post->thumb) }}" alt="" class="img-fluid">
 				@endif
 				</div>
 				<h4>{{ $post->users->name }}</h4>
@@ -80,7 +80,7 @@
 				</div>
 			</div>
 			<br>
-			<button type='submit' class='btn btn-success btn-lg'>Update</button>
+			<button type='submit' class='btn btn-success btn-lg'>Cập nhật</button>
 		<!-- </form> -->
 		{{ Form::close() }}
 	</div>

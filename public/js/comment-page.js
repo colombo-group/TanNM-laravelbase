@@ -4,7 +4,8 @@ $('document').ready(function(){
 		$(this).children('textarea').val("dkfndskf");
 		 $.ajaxSetup({
        			headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-   		 })
+   		 });
+
 		$.ajax({
 			method :'post',
 			url: url,
@@ -13,7 +14,8 @@ $('document').ready(function(){
 				content : data.get('content'),
 				parentId : data.get('comment_parent'),
 				postId : data.get('postId'),
-				userId : data.get('userId')
+				userId : data.get('userId'),
+				pageId : data.get('pageId')
 			},
 			success: function(rs){
 				if(rs){
@@ -48,8 +50,7 @@ $('document').ready(function(){
 
 	function childComment(parentId , content ){
 
-		var postId = $('#postId').val();
-
+		var pageId = $('#pageId').val();
 		 $.ajaxSetup({
        			headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
    		 });
@@ -58,7 +59,7 @@ $('document').ready(function(){
 			type :'post',
 			dataType :'json',
 			data : {
-				postId : postId,
+				pageId : pageId,
 				parentId :parentId,
 				content : 	content
 			},

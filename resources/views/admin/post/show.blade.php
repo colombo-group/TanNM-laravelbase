@@ -42,7 +42,7 @@
 @endif
 				<div class="col-sm-12 col-md-2">
 					@if($post->thumb!=null)
-						<img src="{{ asset($post->thumb) }}" alt="Thumb" class="img-fluid" >
+						<img src="{{ asset('storage/'.$post->thumb) }}" alt="Thumb" class="img-fluid" >
 					@endif
 					<br>
 					<h5>{{ $post->users->name}}</h5>

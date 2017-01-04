@@ -33,7 +33,7 @@
 @section('content')
 <div class="container">
 	<div class="content">
-	<h2 class="display-4 align-center">Edit Page</h2>
+	<h2 class="display-4 align-center">Sửa bài</h2>
 		<hr>
 		{{ Form::model($page , ['route'=>['page.update',$page->id] , 'method'=>'PATCH', 'enctype'=>'multipart/form-data' ,'novalidate']) }}
 				{{ csrf_field() }}
@@ -49,7 +49,7 @@
 			<div class="form-group row">
 				<div class="col-xs-2">
 				@if($page->thumb!=null)
-				<img src="{{ asset($page->thumb) }}" alt="" class="img-fluid">
+				<img src="{{ asset('storage/'.$page->thumb) }}" alt="" class="img-fluid">
 				@endif
 				</div>
 			</div>
@@ -70,7 +70,7 @@
 				</div>
 			</div>
 			<br>
-			<button type='submit' class='btn btn-success btn-lg'>Edit</button>
+			<button type='submit' class='btn btn-success btn-lg'>Cập nhật</button>
 		<!-- </form> -->
 		{{ Form::close() }}
 	</div>

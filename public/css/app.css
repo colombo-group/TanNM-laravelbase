@@ -16,7 +16,12 @@ html {
 body {
   margin: 0;
 }
-
+.comment-child-form{
+  margin-top: 10px;
+}
+.comment-child-form button{
+  margin-top:5px;
+}
 article,
 aside,
 details,

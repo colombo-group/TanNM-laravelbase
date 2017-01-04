@@ -6,12 +6,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Repositories\PageRepository;
+use App\Repositories\CommentRepository;
 
 
 class HomeController extends Controller
 {
 
     protected $page;
+    protected $comment;
     /**
      * Create a new controller instance.
      *
@@ -21,6 +23,7 @@ class HomeController extends Controller
     {
         //$this->middleware('auth');
         $this->page = $page;
+        $this->comment = new CommentRepository;
 
     }
 
@@ -37,8 +40,9 @@ class HomeController extends Controller
 
     public function show($id){
         $page = $this->page->findId($id);
+        $comment = $page->comments->all();
         if($page){
-            return view('page')->with('page',$page);
+            return view('page')->with(['page'=>$page, 'comments'=>$comment]);
         }else{
             abort(404);
         }

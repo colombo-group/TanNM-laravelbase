@@ -106,7 +106,14 @@ use Auth;
 			$comment->content = $input->input('content');
 			$comment->parent_id = $input->parentId;
 			$comment->user_id = Auth::user()->id;
-			$comment->post_id = $input->postId;
+			
+			if($optional ==true){
+				$comment->post_id = null;
+			}
+			else{
+				$comment->post_id = $input->postId;
+			}
+			$comment->page_id = $input->pageId;
 			if($comment->save()){
 				return $comment;
 			}

@@ -77,8 +77,8 @@ class PageController extends Controller
             if($validate->fails()){
                 return redirect()->intended('admin/page/create')->withErrors($validate);
             }
-            $fileName = time().".".$thumb->getClientOriginalExtension();
-            $store .=$fileName; 
+             $fileName = time().".".$thumb->getClientOriginalExtension();
+             $store .=$fileName;
             $disk->put($store, File::get($thumb)); 
         }
         //Lưu csdl

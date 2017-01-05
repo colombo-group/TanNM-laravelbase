@@ -22,6 +22,8 @@ class CreateCommentsTable extends Migration
             $table->integer('page_id')->nullable();
             $table->integer('user_id');
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

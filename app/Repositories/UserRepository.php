@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Repositories\RepositoryInterface;
 use App\Models\User;	
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 	/**

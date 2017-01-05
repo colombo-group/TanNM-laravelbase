@@ -2,9 +2,10 @@
 	
 	namespace App\Repositories;
 
+	use Illuminate\Database\Eloquent\SoftDeletes;
 	use App\Models\Comment;
 	use App\Repositories\RepositoryInterface;
-use Auth;
+	use Auth;
 	
 	class commentRepository implements RepositoryInterface{
 	/**
@@ -23,25 +24,7 @@ use Auth;
 	 */
 	public function delete($id){
 		$comment  = Comment::find($id);
-		$comments = Comment::All();
-		function del($id , $comments){
-
-			foreach ($comments as $key ) {
-				if($key->parent_id == $id){
-					del($key->id, $comments);
-					Self::delPost($$key->id);
-					$key->delete();
-				}
-			}
-		}
-		if($comment){
-				del($comment->id , $comments);
-				$comment->delete();
-				return true;
-			}
-		else{
-			return false;
-		}
+		$comment->delete();
 	}
     
     /**
@@ -49,6 +32,7 @@ use Auth;
     */
 
     public static function delPost($id){
+
     	$comment = Comment::find($id);
     	$comment->posts()->delete();
     }			
@@ -67,7 +51,8 @@ use Auth;
 	 *@return object
 	 */
 	public function forceDel($id){
-		
+		 $comment = Comment::withTrashed()->where('id' , '=' , $id)->first();
+         $comment->forceDelete();
 	}
 
 

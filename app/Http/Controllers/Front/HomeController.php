@@ -37,7 +37,7 @@ class HomeController extends Controller
     public function index()
     {   
         $cate=$this->cate->showAll(); 
-        $pages = $this->page->paginateOrderBy('updated_at' , 'DESC' , 2);
+        $pages = $this->page->paginateOrderBy('created_at' , 'DESC' , 10);
          return view('index')->with(['pages'=> $pages, 'cate'=>$cate]);
     }
 

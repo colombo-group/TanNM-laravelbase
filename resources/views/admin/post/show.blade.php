@@ -26,7 +26,7 @@
 @endsection
 @section('title','| Categories')
 @section('script')
-
+<script type="text/javascript" src="{{ asset('js/admin-post.js')}}"></script>
 @endsection
 @section('content')
 <div class="container wrapper">
@@ -53,7 +53,48 @@
 				</div>
 				<div class="col-sm-12 col-md-10">
 					{!! $post->content !!}
+					<div class="col-sm-12 comment-section">
+				<hr>
+				<?php  $i=0;?>
+				@foreach($comments as $comment)
+				@if($comment->parent_id == 0 )
+				<?php $i++; ?>
+				<div class="col-xs-12 first-comment">
+					<span>
+						<strong>{{ $comment->users->name }}</strong>
+					</span>
+					<small class='text-muted'></small>
+					<p>{{ $comment->content }} <a href="{{ route('admin.comment.delete' , $comment->id) }}">Ẩn</a> <a href="{{ route('admin.comment.forceDel',$comment->id) }}">Xóa</a></p>
+					<div class="child-comment col-xs-10 col-offset-2" parent-section='{{ $comment->id}}'>
+						<?php  $j=0;?>
+
+						@foreach($comments as $key => $value)
+						@if($value->parent_id == $comment->id) 
+						<?php $j++; ?>
+						<div class="col-xs-12 second"  commentChild-id={{ $value->id }}>
+							<span>
+								<strong>{{ $value->users->name }}</strong>
+							</span>
+							<small class='text-muted'></small>
+							<p>{{ $value->content }} <a href="{{ route('admin.comment.delete' , $value->id) }}">Ẩn</a> <a href="{{ route('admin.comment.forceDel',$value->id) }}">Xóa</a></p>
+						</div>
+						<?php unset($comments[$key]); ?>
+						@endif
+						<?php if($j==2){break;} ?>
+
+						@endforeach
+					</div>
 				</div>
+				@endif
+				<?php if($i==5){ echo "<input type='hidden' value='".$comment->id."' id='start'>";   break;} ?>
+				@endforeach
+
+			</div>
+			@if($commentParent>5)
+			<a href="javascript:;"  id='loadMoreParent'>Thêm</a>
+			@endif
+				</div>
+				<input type="hidden" id="postId" value="{{ $post->id}}">
 			</div>
 		</div>
 	</div>

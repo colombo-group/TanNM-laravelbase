@@ -13,14 +13,17 @@ use Carbon\Carbon;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Adapter\Local;
 use Illuminate\Support\Facades\Storage;
+use App\Repositories\CommentRepository;
 
 class PageController extends Controller
 {
 
        protected $page;
+       protected $comment;
 
        function __construct(PageRepository $page){
             $this->page = $page;
+            $this->comment = new CommentRepository;
        } 
 
 
@@ -103,7 +106,9 @@ class PageController extends Controller
     {
         //
         $page  = $this->page->findId($id);
-        return view('admin.page')->with('page',$page);
+        $comment = $page->comments->all();
+        $commentParent = $page->comments->where('parent_id' , '=' , 0);
+        return view('admin.page')->with(['page'=>$page, 'comments'=>$comment , 'commentParent'=>$commentParent->count()]);
     }
 
     /**

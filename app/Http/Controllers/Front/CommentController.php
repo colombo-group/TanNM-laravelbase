@@ -30,6 +30,7 @@ class CommentController extends Controller
   	 * Submit comment	
      */
     public function store(Request $comment){
+      
     	$rs['status'] = null;
         if($comment->input('postId') == ""){
     	     $comment = $this->comment->save($comment , true);

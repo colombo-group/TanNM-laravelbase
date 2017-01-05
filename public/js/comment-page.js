@@ -35,7 +35,7 @@ $('document').ready(function(){
 
 	$('.comment-section').on('click','.comment-button',function(){
 		var html = "<form class='comment-child-form'><textarea class='form-control col-xs-12'  name='content' ></textarea></div>";
-		html+="<button class='btn btn-primary' parentId='"+$(this).attr('commentId')+"'>Bình luận</button></form>";
+		html+="<button class='btn btn-primary' parentId='"+$(this).attr('comment-Id')+"'>Bình luận</button></form>";
 		$('.comment-section').children('a').off('click');
 		$(this).parent($('.first-comment')).fadeIn('slow', function() {
 			$(this).append(html);
@@ -98,7 +98,7 @@ function loadMore(rs){
 		html+="&#32;&#32;&#32;&#32; vừa xong";
 		html+="</small><p>";
 		html+=rs['content'];
-		html+="<a href='javascript:;' class='comment-button' commentId = '"+rs['id']+"'>Trả lời</a></p><div class='child-comment col-xs-10 col-offset-2' parent-Section='"+rs['id']+"'</div></div>";
+		html+="<a href='javascript:;' class='comment-button' comment-Id = '"+rs['id']+"'>Trả lời</a></p><div class='child-comment col-xs-10 col-offset-2' parent-Section='"+rs['id']+"'</div></div>";
 		$('.comment-section').fadeIn('1000', function() {
 			$(this).append(html);
 		});
@@ -155,6 +155,7 @@ function loadMoreParent(pageId , url , start){
 						
 						html+="</small><p>";
 						html+=val['child']['content'];
+						html+="</p>";
 					}
 					html+="</div></div>";
 					
@@ -224,6 +225,8 @@ function loadMoreChildComment(parentId , start){
 
 			html+="</small><p>";
 			html+=val['content'];
+						html+="</p>";
+			
 			html+="</div></div>";
 
 		$('.comment-section').children('.first-comment').each(function(index, el) {

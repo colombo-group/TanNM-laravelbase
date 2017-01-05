@@ -35,6 +35,8 @@ Route::group([	'middleware' => 'AdminMiddleware'], function () {
 	Route::get('admin/post/{id}','Admin\PostController@show')->name('admin.post.show');
 	Route::get('admin/post/edit/{id}','Admin\PostController@edit')->name('admin.post.edit');
 	Route::post('admin/post/update/{id}','Admin\PostController@update')->name('admin.post.update');
+	Route::get('admin/comment/delete/{id}', 'Admin\CommentController@delete')->name('admin.comment.delete');
+	Route::get('admin/comment/forceDel/{id}', 'Admin\CommentController@forceDel')->name('admin.comment.forceDel');
   });  
 Route::get('/page/{id}', 'Front\HomeController@show')->name('front.page.show');
 Route::get('register',function(){

@@ -11,6 +11,7 @@ use Validator;
 use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Repositories\CommentRepository;
 
 
 class PostController extends Controller
@@ -18,10 +19,12 @@ class PostController extends Controller
     //
     protected $post;
     protected $cate;
+    protected $comment;
 
     function __construct(){
     	$this->post = new PostRepository;
-    	$this->cate = new CateRepository;
+        $this->cate = new CateRepository;
+    	$this->comment = new CommentRepository;
     }
 
     /**
@@ -50,7 +53,9 @@ class PostController extends Controller
     */
     public function show($id){
         $post = $this->post->findId($id);
-        return view('admin.post.show')->with('post',$post);
+         $comment = $post->comments->all();
+        $commentParent = $post->comments->where('parent_id' , '=' , 0);
+        return view('admin.post.show')->with(['post'=>$post , 'comments'=>$comment , 'commentParent'=>$commentParent->count()]);
     } 
 
     /**

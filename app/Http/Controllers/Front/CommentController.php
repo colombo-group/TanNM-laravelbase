@@ -9,6 +9,7 @@ use App\Repositories\PageRepository;
 use Illuminate\Http\Response;
 use Auth;
 use App\Models\Comment;
+use App\Repositories\PostRepository;
 
 /**
  * Class Comment
@@ -17,10 +18,12 @@ class CommentController extends Controller
 {
     //
   protected $comment ;
-	protected $page ;
+  protected $page ;
+	protected $post ;
 	function __construct(){
     $this->comment = new CommentRepository;
-		$this->page = new PageRepository;
+    $this->page = new PageRepository;
+		$this->post = new PostRepository;
 	}
 
     /**
@@ -28,11 +31,10 @@ class CommentController extends Controller
      */
     public function store(Request $comment){
     	$rs['status'] = null;
-
         if($comment->input('postId') == ""){
-    	$comment = $this->comment->save($comment , true);
+    	     $comment = $this->comment->save($comment , true);
          }else{
-          $comment = $this->comment->save($comment , null);
+           $comment = $this->comment->save($comment , null);
          }
     	if($comment){
     		$rs['content'] = $comment->content;
@@ -53,8 +55,14 @@ class CommentController extends Controller
      *load trang đầu tiên
      */
     public function getCommentParent(Request $request){
+      if($request->input('postId') ==""){
         $page = $this->page->findId($request->input('pageId'));
         $comments = $page->comments->where('id', '>' , $request->input('start'))->all();
+      }else{
+         $post = $this->post->findId($request->input('postId'));
+        $comments = $post->comments->where('id', '>' , $request->input('start'))->all();
+      }
+        
         $i = 0;
         $arrSum = [];
         foreach ($comments as $comment) {
@@ -94,17 +102,29 @@ class CommentController extends Controller
 
 
     public function getCommentParentMore(Request $request){
-
-      $page = $this->page->findId($request->input(('pageId')));
-      $comments = $page->comments->where('parent_id' , '=' , $request->input('parentId'));
+      if($request->input('postId') !=""){
+          $post = $this->post->findId($request->input(('postId')));
+         $comments = $post->comments->where('parent_id' , '=' , $request->input('parentId'));
+      }else{
+         $page = $this->page->findId($request->input(('pageId')));
+         $comments = $page->comments->where('parent_id' , '=' , $request->input('parentId'));
+      }
+     
       
       return  response()->json(['count'=>$comments->count()]);
     }
 
     public function getCommentChildMore(Request $request){
-      $page = $this->page->findId($request->input(('pageId')));
       $start = (int)$request->input('start');
-      $comments = $page->comments->where('parent_id' , '=' , $request->input('parentId'))->where('id' , '>' ,$start)->take(20);
+      if($request->input('pageId')){
+        $page = $this->page->findId($request->input(('pageId')));
+         $comments = $page->comments->where('parent_id' , '=' , $request->input('parentId'))->where('id' , '>' ,$start)->take(20);
+      }else{
+        $post = $this->post->findId($request->input(('postId')));
+         $comments = $post->comments->where('parent_id' , '=' , $request->input('parentId'))->where('id' , '>' ,$start)->take(20);
+      }
+
+     
       $arrSum = [];
        foreach ($comments as $key) {
                   $tmpArr = [];

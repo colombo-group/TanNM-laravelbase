@@ -5,7 +5,7 @@ $('document').ready(function(){
 
 	$('.comment-form').on('submit',function(){
 		var data = new FormData(this);
-		$(this).children('textarea').val("dkfndskf");
+		$(this).children('textarea').val("");
 		$.ajaxSetup({
 			headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
 		});
@@ -35,7 +35,7 @@ $('document').ready(function(){
 
 	$('.comment-section').on('click','.comment-button',function(){
 		var html = "<form class='comment-child-form'><textarea class='form-control col-xs-12'  name='content' ></textarea></div>";
-		html+="<button class='btn btn-primary' parentId='"+$(this).attr('comment-Id')+"'>Bình luận</button></form>";
+		html+="<button class='btn btn-primary' parentId='"+$(this).attr('commentId')+"'>Bình luận</button></form>";
 		$('.comment-section').children('a').off('click');
 		$(this).parent($('.first-comment')).fadeIn('slow', function() {
 			$(this).append(html);
@@ -47,7 +47,6 @@ $('document').ready(function(){
 		var content  = $(this).children('textarea').val();
 		var parentId = $(this).children('button').attr('parentId');
 		childComment(parentId , content);
-
 		return false;
 	});
 
@@ -81,7 +80,8 @@ function childComment(parentId , content ){
 		data : {
 			pageId : pageId,
 			parentId :parentId,
-			content : 	content
+			content : 	content,
+			postId : ""
 		},
 		success :function(rs){
 			loadMore(rs);

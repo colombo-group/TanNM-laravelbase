@@ -104,17 +104,17 @@ use Auth;
 		public function save($input , $optional=null){
 			$comment = new Comment;
 			$comment->content = $input->input('content');
-			$comment->parent_id = $input->parentId;
+			$comment->parent_id = $input->input('parentId');
 			$comment->user_id = Auth::user()->id;
 			
-			if($optional ==true){
+			if($optional == true){
 				$comment->post_id = null;
+				$comment->page_id = $input->input('pageId');
 			}
 			else{
-				$comment->post_id = $input->postId;
+				$comment->post_id = $input->input('postId');
 				$comment->page_id = null;
 			}
-			$comment->page_id = $input->pageId;
 			if($comment->save()){
 				return $comment;
 			}

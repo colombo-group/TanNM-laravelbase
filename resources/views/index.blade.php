@@ -85,7 +85,9 @@
 <div class="col-xs-12 ">
   <h4>Danh mục</h4>
   @foreach($cate as $key)
-    <a href="{{ route('cate.show' , $key->id) }}" class='cate-link'>{{ $key->title }}</a>
+  <div class="col-xs-6">
+    <a href="{{ route('cate.show' , $key->id) }}" >{{ $key->title }}</a>
+    </div>
   @endforeach
 </div>
 @endsection

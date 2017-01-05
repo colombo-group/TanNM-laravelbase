@@ -44,6 +44,7 @@
 <script type="text/javascript" src='{{ asset('js/comment.js') }}'></script>
 @endsection
 @section('content')
+
 <div class="container wrapper">
   <div class="content">
     <div class="col-xs-12">
@@ -116,14 +117,13 @@
  @endif
  <?php if($i==5){ echo "<input type='hidden' value='".$comment->id."' id='start'>";   break;} ?>
  @endforeach
-
+</div>
 </div>
 @if($commentParent>5)
+<div class="col-xs-12">
 <a href="javascript:;"  id='loadMoreParent'>Thêm</a>
+</div>
 @endif
-</div>
-</div>
-</div>
 @endsection
 <script type="text/javascript">
   var token = "{{ Session::token() }}";
@@ -132,3 +132,14 @@
   var url2 = "{{ route('comment.loadCommentParentMore')}}";
   var url3 = "{{ route('comment.loadCommentChildMore')}}";
 </script>
+
+@section('cate')
+<div class="col-xs-12 ">
+  <h4>Danh mục</h4>
+  @foreach($cate as $key)
+  <div class="col-xs-6">
+    <a href="{{ route('cate.show' , $key->id) }}" >{{ $key->title }}</a>
+    </div>
+  @endforeach
+</div>
+@endsection

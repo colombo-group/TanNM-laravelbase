@@ -32,7 +32,7 @@ class PageController extends Controller
     public function index()
     {
         //
-        $pages = $this->page->paginateOrderBy('created_at' ,'DESC', 2);
+        $pages = $this->page->paginateOrderBy('created_at' ,'DESC', 10);
         return view('admin.index')->with('pages', $pages );
     }
 

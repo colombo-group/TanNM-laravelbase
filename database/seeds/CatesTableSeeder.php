@@ -12,29 +12,13 @@ class CatesTableSeeder extends Seeder
     public function run()
     {
         //
-         DB::table('cates')->insert([
-             	'title' => 'Công nghệ',
-                'parent_id'=>'0' 
+
+         $faker = Faker\Factory::create();
+        for ($i=0; $i < 10; $i++) { 
+            DB::table('cates')->insert([
+                'title'=>$faker->realText(10),
+                'parent_id'=>0
             ]);
-        DB::table('cates')->insert([
-             	'title' => 'Moblile',
-                'parent_id'=>'1' 
-            ]); 
-        DB::table('cates')->insert([
-             	'title' => 'Laptop',
-                'parent_id'=>'2' 
-            ]); 
-        DB::table('cates')->insert([
-             	'title' => 'Internet',
-                'parent_id'=>'0' 
-            ]); 
-        DB::table('cates')->insert([
-             	'title' => 'Facebook',
-                'parent_id'=>'1' 
-            ]); 
-        DB::table('cates')->insert([
-             	'title' => 'Instagram',
-                'parent_id'=>'1' 
-            ]);
+        }
     }
 }

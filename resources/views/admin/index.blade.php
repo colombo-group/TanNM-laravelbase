@@ -5,15 +5,15 @@
 	<a class="nav-link" href="{{ route('admin.pages') }}" >Pages<span class="sr-only">(current)</span></a>
 </li>
 <li class="nav-item dropdown ">
-						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="route('admin.cate.index')" role="button" aria-haspopup="true" aria-expanded="false">
-							Danh mục
-						</a>
-						<div class="dropdown-menu" aria-labelledby="Preview">
-							<a class="dropdown-item" href="{{ route('admin.cate.index') }}">Tất cả danh mục</a>
-							<a class="dropdown-item" href="{{ route('admin.cate.manage') }}" >Quản lý danh mục</a>
-							
-						</div>
-					</li>
+	<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="route('admin.cate.index')" role="button" aria-haspopup="true" aria-expanded="false">
+		Danh mục
+	</a>
+	<div class="dropdown-menu" aria-labelledby="Preview">
+		<a class="dropdown-item" href="{{ route('admin.cate.index') }}">Tất cả danh mục</a>
+		<a class="dropdown-item" href="{{ route('admin.cate.manage') }}" >Quản lý danh mục</a>
+
+	</div>
+</li>
 <li class="nav-item dropdown">
 	<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="route('user.index')" role="button" aria-haspopup="true" aria-expanded="false">
 		User
@@ -38,9 +38,11 @@
 	<div class="pages">
 		@foreach($pages as $page)
 		<div class="row clear">
-			<div class="col-sm-12 col-md-1">
+			<div class="col-sm-12 col-md-2">
 				@if($page->thumb !=null)
-				<img src="{{ asset('storage/'.$page->thumb)}}">
+					<img src="{{ asset('storage/'.$page->thumb)}}">
+				@else
+					<img src="{{ asset('default.jpg')}}" >
 				@endif	
 			</div>
 			<div class="col-sm-12 col-md-9">
@@ -87,14 +89,13 @@
 									</div>
 								</div>
 							</div>
-						</div>
+			</div>
 
-					</div>
-				</div>
-				@endforeach
-			{{ $pages->links('pagination') }}
 		</div>
+				@endforeach
+				{{ $pages->links('pagination') }}
+			</div>
+</div>
+			<br/>
 
-<br/>
-
-@endsection
+			@endsection

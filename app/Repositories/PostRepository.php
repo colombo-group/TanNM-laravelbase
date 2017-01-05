@@ -111,6 +111,15 @@ class PostRepository implements RepositoryInterface{
 				return false;
 			}
 		}
+
+		public function tranfer($userId , $userTranfer){
+			$posts = Post::where('user_id' ,'=',$userId)->get();
+			for($i=0;$i<count($posts) ; $i++){
+				$posts[$i]->user_id = $userTranfer;
+				$posts[$i]->save();
+			}
+			
+		}
 		
 	}
 

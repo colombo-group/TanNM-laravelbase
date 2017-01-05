@@ -126,5 +126,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
             }
             }	
 		}
+
+		public function showAll(){
+			return User::all();
+		}
 	}
 ?>

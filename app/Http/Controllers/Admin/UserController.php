@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Repositories\UserRepository;
+use App\Http\Controllers\Admin\PostController;
 
 class UserController extends Controller
 {
@@ -25,7 +26,8 @@ class UserController extends Controller
     {
         //
         $users = $this->user->paginateOrderBy("updated_at" , 'DESC' , 10);
-        return view('admin.users')->with('users' ,$users);
+        $usersTranfer = $this->user->showAll();
+        return view('admin.users')->with(['users' =>$users,'usersTranfer'=>$usersTranfer]);
     }
 
     /**
@@ -126,9 +128,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request , $id)
     {
         //
+        $post = new PostController;
+        $post->tranfer($id , $request->input('userTranfer'));
         if($this->user->delete($id)){
                 return redirect()->route('user.index')->with('status','Xóa rồi nhé !');
             

@@ -113,4 +113,8 @@ class PostController extends Controller
             abort(404);
         }
     }
+
+    public function tranfer($userId , $userTranfer){
+        $this->post->tranfer($userId , $userTranfer);
+    }
 }

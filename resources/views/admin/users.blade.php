@@ -70,14 +70,20 @@
 									</div>
 									<div class="modal-body">
 										Sau khi xóa . user sẽ được chuyển vào del list!
+										{{ Form::open(array('url' => 'admin/user/' . $user->id, 'class' => 'pull-right','id'=>'delete-form')) }}
+											<select name='userTranfer'>
+												@foreach($usersTranfer as $tranfer)
+												<option value={{ $tranfer->id }}>{{ $tranfer->name }}</option>
+												@endforeach
+											</select>
+											{{ Form::hidden('_method', 'DELETE') }}
+											{{ Form::close() }}
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 										<a href="{{route('user.destroy' , $user->id) }}" onclick="event.preventDefault();
 											document.getElementById('delete-form').submit();" type="button" class="btn btn-primary">Delete</a>
-											{{ Form::open(array('url' => 'admin/user/' . $user->id, 'class' => 'pull-right', 'style'=>'display:hidden','id'=>'delete-form')) }}
-											{{ Form::hidden('_method', 'DELETE') }}
-											{{ Form::close() }}
+											
 										</div>
 									</div>
 								</div>

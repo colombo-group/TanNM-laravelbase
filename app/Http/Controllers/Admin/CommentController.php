@@ -26,4 +26,5 @@ class CommentController extends Controller
     	$this->comment->forceDel($id);
     	return redirect()->back();
     }
+
 }

@@ -58,7 +58,13 @@ function loadMoreParent(postId , url , start){
 				$('#start').val(rs[count]['id']);
 				$.each(rs, function(index, val) {
 					var html = "<div class='col-xs-12 first-comment'>";
-					html+= "<span><strong>";
+					html+="<span>";
+					if(val['deleted_at']==null){
+						html+="<strong>";
+					}
+					else{
+						html+="<strong class='text-muted'>";
+					}
 					html+=val['user'];
 					html+="</strong></span><small class='text-muted'>";
 					html+="</small><p>";
@@ -138,7 +144,13 @@ function loadMoreChildComment(parentId , start){
 		success : function(rs){
 		$.each(rs, function(index, val) {
 			var	html= "<div class='col-xs-12 second' commentChild-id = '"+val['id']+"'>";
-			html+= "<span><strong>";
+			html+="<span>";
+					if(val['deleted_at']==null){
+						html+="<strong>";
+					}
+					else{
+						html+="<strong class='text-muted'>";
+					}
 			html+=val['user'];
 			html+="</strong></span><small class='text-muted'>";
 

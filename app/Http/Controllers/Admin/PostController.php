@@ -53,8 +53,8 @@ class PostController extends Controller
     */
     public function show($id){
         $post = $this->post->findId($id);
-         $comment = $post->comments->all();
-        $commentParent = $post->comments->where('parent_id' , '=' , 0);
+         $comment = $post->comments()->withTrashed()->get();
+        $commentParent = $post->comments()->withTrashed()->where('parent_id' , '=' , 0);
         return view('admin.post.show')->with(['post'=>$post , 'comments'=>$comment , 'commentParent'=>$commentParent->count()]);
     } 
 

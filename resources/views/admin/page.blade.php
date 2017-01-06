@@ -40,7 +40,7 @@
 			<br>
 			<div class="col-sm-12 col-md-2">
 				@if($page->thumb!=null)
-				<img src="{{ asset('storage/'.$page->thumb) }}" alt="Thumb" class="img-fluid" >
+					<img src="{{ asset('storage/'.$page->thumb) }}" alt="Thumb" class="img-fluid" >
 				@endif
 				<br>
 				<h5>Administrator</h5>
@@ -59,10 +59,20 @@
 				<?php $i++; ?>
 				<div class="col-xs-12 first-comment">
 					<span>
+					@if($comment->deleted_at ==null)
 						<strong>{{ $comment->users->name }}</strong>
+					@else
+						<strong class='text-muted'>{{ $comment->users->name }}</strong>
+					@endif	
 					</span>
 					<small class='text-muted'></small>
-					<p>{{ $comment->content }} <a href="{{ route('admin.comment.delete' , $comment->id) }}">Ẩn</a> <a href="{{ route('admin.comment.forceDel',$comment->id) }}">Xóa</a></p>
+					<p>{{ $comment->content }}
+					@if($comment->deleted_at==null)
+					 <a href="{{ route('admin.comment.delete' , $comment->id) }}">Ẩn</a>
+					@else
+					<a href="{{ route('admin.comment.restore' , $comment->id) }}">Khôi phục</a>
+					@endif
+					  <a href="{{ route('admin.comment.forceDel',$comment->id) }}">Xóa</a></p>
 					<div class="child-comment col-xs-10 col-offset-2" parent-section='{{ $comment->id}}'>
 						<?php  $j=0;?>
 
@@ -71,10 +81,20 @@
 						<?php $j++; ?>
 						<div class="col-xs-12 second"  commentChild-id={{ $value->id }}>
 							<span>
+							@if($value->deleted_at ==null)
 								<strong>{{ $value->users->name }}</strong>
+							@else
+									<strong class='text-muted'>{{ $value->users->name }}</strong>
+							@endif			
 							</span>
 							<small class='text-muted'></small>
-							<p>{{ $value->content }} <a href="{{ route('admin.comment.delete' , $value->id) }}">Ẩn</a> <a href="{{ route('admin.comment.forceDel',$value->id) }}">Xóa</a></p>
+							<p>{{ $value->content }} 
+							@if($value->deleted_at ==null)
+							<a href="{{ route('admin.comment.delete' , $value->id) }}">Ẩn</a>
+							@else
+							<a href="{{ route('admin.comment.restore' , $value->id) }}">Khôi phục</a>
+							@endif	
+							 <a href="{{ route('admin.comment.forceDel',$value->id) }}">Xóa</a></p>
 						</div>
 						<?php unset($comments[$key]); ?>
 						@endif
@@ -112,7 +132,7 @@
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				<a href="{{route('page.destroy' , $page->id) }}" onclick="event.preventDefault();
 					document.getElementById('delete-form').submit();" type="button" class="btn btn-primary">Delete</a>
-					{{ Form::open(array('url' => 'admin/page/' . $page->id, 'class' => 'pull-right', 'style'=>'display:hidden','id'=>'delete-form')) }}
+					{{ Form::open(array('url' => 'admin/page/' . $page->id, 'class' => 'form-control pull-right', 'style'=>'display:hidden','id'=>'delete-form')) }}
 					{{ Form::hidden('_method', 'DELETE') }}
 					{{ Form::close() }}
 				</div>

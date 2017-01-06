@@ -14,6 +14,8 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\Adapter\Local;
 use Illuminate\Support\Facades\Storage;
 use App\Repositories\CommentRepository;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Comment;
 
 class PageController extends Controller
 {
@@ -67,25 +69,28 @@ class PageController extends Controller
         }
 
         $thumb=null;
+        $store = null;
           //lưu ảnh thumbnail
         if($pageRequest->file('thumb')){
+
             $year = Carbon::now()->year;
             $month = Carbon::now()->month;
             $day = Carbon::now()->day;
             $disk = Storage::disk('public');
-           
             $store = "pages/$year/$month-$year/$day-$month-$year/";
-            $thumb = \Image::make(Input::file('thumb'))->resize(120,120);
+            $thumb = \Image::make($pageRequest->file('thumb'))->resize(120,120);
             $validate = Validator::make($pageRequest->all(),
                ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
 
             if($validate->fails()){
                 return redirect()->intended('admin/page/create')->withErrors($validate);
             }
+             File::exists(storage_path('app/public/' . $store)) or File::makeDirectory(storage_path('app/public/' . $store));
              $fileName = time().".".$pageRequest->file('thumb')->getClientOriginalExtension();
              $store .=$fileName;
-             $thumb->save(storage_path('app/public/' . $store));
+             $thumb->save(storage_path('app/public/'.$store));
         }
+
         //Lưu csdl
         $page = $this->page->save($pageRequest ,$store);
         if($page!=false){
@@ -106,7 +111,7 @@ class PageController extends Controller
     {
         //
         $page  = $this->page->findId($id);
-        $comment = $page->comments->all();
+        $comment = $page->comments()->withTrashed()->get();
         $commentParent = $page->comments->where('parent_id' , '=' , 0);
         return view('admin.page')->with(['page'=>$page, 'comments'=>$comment , 'commentParent'=>$commentParent->count()]);
     }
@@ -146,30 +151,32 @@ class PageController extends Controller
         return redirect()->route('page.edit',$id)->withErrors($validate);
     }
 
-    $thumb=null;
+          $thumb=null;
+        $store = null;
+
           //lưu ảnh thumbnail
-    if($pageRequest->hasFile('thumb')){
+    if($pageRequest->file('thumb')){
         $disk = Storage::disk('public');
-        $thumb = $pageRequest->file('thumb');
+        $thumb = \Image::make($pageRequest->file('thumb'))->resize(120,120);
         $validate = Validator::make($pageRequest->all(),
            ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
 
         if($validate->fails()){
             return redirect()->route('page.edit',$id)->withErrors($validate);
         }
-        $path = 'upload';
-        $fileName = time()."-".$thumb->getClientOriginalName();
+        $fileName = time()."-".$pageRequest->file('thumb')->getClientOriginalName();
         if($disk->exists($page->thumb)){
                    $disk->delete($page->thumb);
             }
-        $year = Carbon::now()->year;
+             $year = Carbon::now()->year;
             $month = Carbon::now()->month;
             $day = Carbon::now()->day;
            
             $store = "pages/$year/$month-$year/$day-$month-$year/"; 
-              $fileName = time().".".$thumb->getClientOriginalExtension();
-            $store .=$fileName; 
-            $disk->put($store, File::get($thumb)); 
+            File::exists(storage_path('app/public/' . $store)) or File::makeDirectory(storage_path('app/public/' . $store));
+             $fileName = time().".".$pageRequest->file('thumb')->getClientOriginalExtension();
+             $store .=$fileName;
+             $thumb->save(storage_path('app/public/'.$store));
       }
         //Lưu csdl
         $id = $this->page->update($pageRequest ,$id ,  $store );

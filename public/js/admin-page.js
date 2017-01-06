@@ -58,12 +58,22 @@ function loadMoreParent(pageId , url , start){
 				$('#start').val(rs[count]['id']);
 				$.each(rs, function(index, val) {
 					var html = "<div class='col-xs-12 first-comment'>";
-					html+= "<span><strong>";
+					html+="<span>";
+					if(val['deleted_at']==null){
+						html+="<strong>";
+					}
+					else{
+						html+="<strong class='text-muted'>";
+					}
 					html+=val['user'];
 					html+="</strong></span><small class='text-muted'>";
 					html+="</small><p>";
 					html+=val['content'];
-					html+=" <a href='admin/comment/delete/"+val['id']+"'  commentId = '"+val['id']+"'>Ẩn</a>";
+					if(val['deleted_at'] ==null){
+						html+=" <a href='admin/comment/delete/"+val['id']+"'  commentId = '"+val['id']+"'>Ẩn</a>";
+					}else{
+						html+=" <a href='admin/comment/restore/"+val['id']+"'  commentId = '"+val['id']+"'>Khôi phục</a>";
+					}
 					html+=" <a href='admin/comment/forceDel/"+val['id']+"'  commentId = '"+val['id']+"'>Xóa</a>";
 					html+="<div class='child-comment col-xs-10 col-offset-2' parent-Section='"+val['id']+"'>";
 					if(val['child'] !=null){
@@ -138,13 +148,24 @@ function loadMoreChildComment(parentId , start){
 		success : function(rs){
 		$.each(rs, function(index, val) {
 			var	html= "<div class='col-xs-12 second' commentChild-id = '"+val['id']+"'>";
-			html+= "<span><strong>";
+			html+= "<span>";
+
+			if(val['deleted_at']==null){
+						html+="<strong>";
+					}
+					else{
+						html+="<strong class='text-muted'>";
+					}
 			html+=val['user'];
 			html+="</strong></span><small class='text-muted'>";
 
 			html+="</small><p>";
 			html+=val['content'];
+			if(val['deleted_at'] ==null){
 			html+=" <a href='admin/comment/delete/"+val['id']+"'  commentId = '"+val['id']+"'>Ẩn</a>";
+		}else{
+			html+=" <a href='admin/comment/restore/"+val['id']+"'  commentId = '"+val['id']+"'>Khôi phục</a>";
+		}
 					html+=" <a href='admin/comment/forceDel/"+val['id']+"'  commentId = '"+val['id']+"'>Xóa</a>";
 			html+="</p>";
 			html+="</div></div>";

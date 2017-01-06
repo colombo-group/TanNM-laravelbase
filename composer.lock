@@ -2194,22 +2194,26 @@
         },
         {
             "name": "unisharp/laravel-filemanager",
-            "version": "1.6.2",
+            "version": "1.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/UniSharp/laravel-filemanager.git",
-                "reference": "124f07151dd47343583848ebfd4f047cd4ca9bd0"
+                "reference": "4ad58cb7117ab23dc2a96bdf748f120db4945433"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/UniSharp/laravel-filemanager/zipball/124f07151dd47343583848ebfd4f047cd4ca9bd0",
-                "reference": "124f07151dd47343583848ebfd4f047cd4ca9bd0",
+                "url": "https://api.github.com/repos/UniSharp/laravel-filemanager/zipball/4ad58cb7117ab23dc2a96bdf748f120db4945433",
+                "reference": "4ad58cb7117ab23dc2a96bdf748f120db4945433",
                 "shasum": ""
             },
             "require": {
                 "illuminate/support": ">=4.2.0",
                 "intervention/image": "2.*",
                 "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "~3.0",
+                "phpunit/phpunit": "~4.8"
             },
             "suggest": {
                 "ext-gd": "to use GD library based image processing.",
@@ -2246,7 +2250,7 @@
                 "tinymce",
                 "upload"
             ],
-            "time": "2016-11-22T03:54:17+00:00"
+            "time": "2017-01-03T09:54:33+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

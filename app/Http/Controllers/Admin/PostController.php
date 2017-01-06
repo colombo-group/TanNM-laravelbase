@@ -90,7 +90,7 @@ class PostController extends Controller
             $disk = Storage::disk('public');
 
             $store = "posts/$year/$month-$year/$day-$month-$year/";
-            $thumb = Image::make($postRequest->file('thumb'))->resize(120,120);
+            $thumb = \Image::make($postRequest->file('thumb'))->resize(120,120);
             $validate = Validator::make($postRequest->all(),
              ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
 
@@ -101,8 +101,9 @@ class PostController extends Controller
                 $disk->delete($post->thumb);
             }
             $fileName = time().".".$postRequest->file('thumb')->getClientOriginalExtension();
+           
+           File::exists(storage_path('app/public/' . $store)) or File::makeDirectory(storage_path('app/public/' . $store));
             $store .=$fileName; 
-
             $thumb->save(storage_path("app/public/".$store));
         }
         //Lưu csdl

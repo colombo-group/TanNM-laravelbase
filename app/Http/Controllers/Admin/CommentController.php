@@ -27,4 +27,9 @@ class CommentController extends Controller
     	return redirect()->back();
     }
 
+    public function restore($id){
+        $this->comment->restore($id);
+        return redirect()->back();
+    }
+
 }

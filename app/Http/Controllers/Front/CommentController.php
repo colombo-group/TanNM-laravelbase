@@ -75,6 +75,7 @@ class CommentController extends Controller
             $arr['user'] = $comment->users->name;
             $arr['user_id'] = $comment->user_id;
             $arr['created_at'] = $comment->created_at;
+            $arr['deleted_at'] = $comment-deleted_at;
             $arr['child'] = null;
             $j = 0;
             foreach ($comments as $key => $value) {
@@ -86,6 +87,7 @@ class CommentController extends Controller
                   $tmpArr['user'] = $value->users->name;
                   $tmpArr['user_id'] = $value->user_id;
                   $tmpArr['created_at'] = $value->created_at;
+                  $tmpArr['deleted_at'] = $value->deleted_at;
                   $arr['child'] = $tmpArr;
                 }
                 if($j==2){
@@ -134,6 +136,7 @@ class CommentController extends Controller
                   $tmpArr['user'] = $key->users->name;
                   $tmpArr['user_id'] = $key->user_id;
                   $tmpArr['created_at'] = $key->created_at;
+                  $tmpArr['deleted_at'] = $key->deleted_at;
             array_push($arrSum , $tmpArr);
        }
       return  response()->json($arrSum);

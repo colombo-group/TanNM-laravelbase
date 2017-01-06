@@ -65,6 +65,9 @@ class PostController extends Controller
         if($postRequest->file('thumb')){
             $store = "posts/$year/$month-$year/$day-$month-$year/"; 
             $thumb = \Image::make($postRequest->file('thumb'))->resize(120,120);
+            if(File::exists($store)){
+                File::makeDirectory(storage_path('app/public/'.$store));
+            }
             $fileName = time()."-".$postRequest->file('thumb')->getClientOriginalName();
             $thumb->save(storage_path('app/public/' . $store.$fileName));
             $store.=$fileName;
@@ -180,6 +183,7 @@ class PostController extends Controller
             return redirect()->route('post.edit',$id)->withErrors($validate);
         }
         $fileName = time()."-".$postRequest->file('thumb')->getClientOriginalName();
+        File::exists(storage_path('app/public/' . $store)) or File::makeDirectory(storage_path('app/public/' . $store));
         $store .=$fileName; 
           if($disk->exists($post->thumb) && $post->thumb !=null){
             $disk->delete($post->thumb);

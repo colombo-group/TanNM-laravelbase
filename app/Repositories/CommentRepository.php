@@ -117,6 +117,15 @@
 
 			
 		}
+
+
+		/**
+		 * hàm restore comment
+		 */
+		public function restore($id){
+			$comment = Comment::withTrashed()->where('id','=',$id)->first();
+			$comment->restore();
+		}
 		
 	}
 

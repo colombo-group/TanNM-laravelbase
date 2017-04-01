@@ -50,7 +50,7 @@
   <div class="row title" style="margin-top:30px;">
     <div class="col-xs-12 col-sm-2">
       @if($page->thumb !=null)
-      <img src="{{ asset('storage/'.$page->thumb)}}">
+      <img src="{{ asset($page->thumb)}}">
       @else
         <img src="{{ asset('default.jpg') }}">
       @endif

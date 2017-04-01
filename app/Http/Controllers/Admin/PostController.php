@@ -83,14 +83,7 @@ class PostController extends Controller
         $thumb=null;
           //lưu ảnh thumbnail
         if($postRequest->file('thumb')){
-            $disk = Storage::disk('public');
-            $year = Carbon::now()->year;
-            $month = Carbon::now()->month;
-            $day = Carbon::now()->day;
-            $disk = Storage::disk('public');
-
-            $store = "posts/$year/$month-$year/$day-$month-$year/";
-            $thumb = \Image::make($postRequest->file('thumb'))->resize(120,120);
+             $thumb = $pageRequest->file('thumb');
             $validate = Validator::make($postRequest->all(),
              ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
 
@@ -100,14 +93,15 @@ class PostController extends Controller
             if($disk->exists($post->thumb) && $post->thumb !=null){
                 $disk->delete($post->thumb);
             }
-            $fileName = time().".".$postRequest->file('thumb')->getClientOriginalExtension();
-           
-           File::exists(storage_path('app/public/' . $store)) or File::makeDirectory(storage_path('app/public/' . $store));
-            $store .=$fileName; 
-            $thumb->save(storage_path("app/public/".$store));
+            $path = 'upload';
+               $fileName = time()."-".$thumb->getClientOriginalName();
+               if(File::exists($post->thumb)){
+               File::delete($post->thumb);}
+               $thumb->move($path , $fileName); 
+               $thumb = $path."/".$fileName;
         }
         //Lưu csdl
-        $id = $this->post->update($postRequest ,$id ,  $store );
+        $id = $this->post->update($postRequest ,$id ,  $thumb );
         if($id !=false){
             return redirect()->route('admin.post.show',$id);
         }else{

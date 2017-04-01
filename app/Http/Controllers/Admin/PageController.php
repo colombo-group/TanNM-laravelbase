@@ -73,26 +73,22 @@ class PageController extends Controller
           //lưu ảnh thumbnail
         if($pageRequest->file('thumb')){
 
-            $year = Carbon::now()->year;
-            $month = Carbon::now()->month;
-            $day = Carbon::now()->day;
-            $disk = Storage::disk('public');
-            $store = "pages/$year/$month-$year/$day-$month-$year/";
-            $thumb = \Image::make($pageRequest->file('thumb'))->resize(120,120);
+            $thumb = $pageRequest->file('thumb');
+           // $thumb = \Image::make($pageRequest->file('thumb'))->resize(120,120);
             $validate = Validator::make($pageRequest->all(),
                ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
 
             if($validate->fails()){
                 return redirect()->intended('admin/page/create')->withErrors($validate);
             }
-             File::exists(storage_path('app/public/' . $store)) or File::makeDirectory(storage_path('app/public/' . $store));
-             $fileName = time().".".$pageRequest->file('thumb')->getClientOriginalExtension();
-             $store .=$fileName;
-             $thumb->save(storage_path('app/public/'.$store));
+              $path = 'upload';
+               $fileName = time()."-".$thumb->getClientOriginalName();
+               $thumb->move($path , $fileName); 
+               $thumb = $path."/".$fileName;
         }
 
         //Lưu csdl
-        $page = $this->page->save($pageRequest ,$store);
+        $page = $this->page->save($pageRequest ,$thumb);
         if($page!=false){
             return redirect()->route('page.show',$page);
         }
@@ -156,30 +152,30 @@ class PageController extends Controller
 
           //lưu ảnh thumbnail
     if($pageRequest->file('thumb')){
-        $disk = Storage::disk('public');
-        $thumb = \Image::make($pageRequest->file('thumb'))->resize(120,120);
+       
         $validate = Validator::make($pageRequest->all(),
            ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
 
         if($validate->fails()){
             return redirect()->route('page.edit',$id)->withErrors($validate);
         }
-        $fileName = time()."-".$pageRequest->file('thumb')->getClientOriginalName();
-        if($disk->exists($page->thumb)){
-                   $disk->delete($page->thumb);
-            }
-             $year = Carbon::now()->year;
-            $month = Carbon::now()->month;
-            $day = Carbon::now()->day;
-           
-            $store = "pages/$year/$month-$year/$day-$month-$year/"; 
-            File::exists(storage_path('app/public/' . $store)) or File::makeDirectory(storage_path('app/public/' . $store));
-             $fileName = time().".".$pageRequest->file('thumb')->getClientOriginalExtension();
-             $store .=$fileName;
-             $thumb->save(storage_path('app/public/'.$store));
+       // $fileName = time()."-".$pageRequest->file('thumb')->getClientOriginalName();
+         $thumb = $pageRequest->file('thumb');
+                $validate = Validator::make($pageRequest->all(),
+                     ['thumb'=>'mimes:jpeg,jpg,png'],['thumb.mimes'=>'File tải lên phải là định dạng ảnh']);
+
+                if($validate->fails()){
+                        return redirect()->route('post.edit',$id)->withErrors($validate);
+               }
+               $path = 'upload';    
+               $fileName = time()."-".$thumb->getClientOriginalName();
+               if(File::exists($page->thumb)){
+               File::delete($page->thumb);}
+               $thumb->move($path , $fileName); 
+               $thumb = $path."/".$fileName;
       }
         //Lưu csdl
-        $id = $this->page->update($pageRequest ,$id ,  $store );
+        $id = $this->page->update($pageRequest ,$id ,  $thumb );
         if($id !=false){
             return redirect()->route('page.show',$id);
         }else{

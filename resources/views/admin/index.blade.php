@@ -40,7 +40,7 @@
 		<div class="row clear">
 			<div class="col-sm-12 col-md-2">
 				@if($page->thumb !=null)
-					<img src="{{ asset('storage/'.$page->thumb)}}">
+					<img src="{{ asset($page->thumb)}}">
 				@else
 					<img src="{{ asset('default.jpg')}}" >
 				@endif	

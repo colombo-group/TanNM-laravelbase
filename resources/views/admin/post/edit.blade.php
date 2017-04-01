@@ -26,9 +26,10 @@
 @endsection
 @section('title','| Categories')
 @section('script')
+<script src="{{ asset('js/lfm.js')}}"></script>
 	<script type='text/javascript' src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
 <script type='text/javascript' src="{{ asset('js/admin.js') }}"></script>
-<script src="/vendor/laravel-filemanager/js/lfm.js"></script>
+
 @endsection
 @section('content')
 <div class="container">

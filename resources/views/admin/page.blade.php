@@ -40,7 +40,7 @@
 			<br>
 			<div class="col-sm-12 col-md-2">
 				@if($page->thumb!=null)
-					<img src="{{ asset('storage/'.$page->thumb) }}" alt="Thumb" class="img-fluid" >
+					<img src="{{ asset($page->thumb) }}" alt="Thumb" class="img-fluid" >
 				@endif
 				<br>
 				<h5>Administrator</h5>

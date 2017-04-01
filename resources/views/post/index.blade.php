@@ -60,7 +60,7 @@
 		<div class="row clear">
 			<div class="col-sm-12 col-md-2">
 				@if($post->thumb !=null)
-				<img src="{{ asset('storage/'.$post->thumb) }}">
+				<img src="{{ asset($post->thumb) }}">
 				@endif	
 			</div>
 			<div class="col-sm-12 col-md-9">

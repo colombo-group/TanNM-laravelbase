@@ -62,7 +62,7 @@
         </div>
 				
 				<div class="col-sm-12 col-md-12">
-          <img src="{{ asset('storage/'.$post->thumb )}}" class="image-resposive">
+          <img src="{{ asset($post->thumb )}}" class="image-resposive">
 
 					{!! $post->content !!}
           

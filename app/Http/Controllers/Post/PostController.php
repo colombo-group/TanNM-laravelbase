@@ -55,24 +55,20 @@ class PostController extends Controller
   	 *@return View | error
   	 */
   	public function store($userId , Request $postRequest){
-        $year = Carbon::now()->year;
-            $month = Carbon::now()->month;
-            $day = Carbon::now()->day;
-            $disk = Storage::disk('public');
-           $store = null;
+       
   		 $thumb=null;
+            
 
         if($postRequest->file('thumb')){
-            $store = "posts/$year/$month-$year/$day-$month-$year/"; 
-            $thumb = \Image::make($postRequest->file('thumb'))->resize(120,120);
-            if(File::exists($store)){
-                File::makeDirectory(storage_path('app/public/'.$store));
-            }
-            $fileName = time()."-".$postRequest->file('thumb')->getClientOriginalName();
-            $thumb->save(storage_path('app/public/' . $store.$fileName));
-            $store.=$fileName;
+            $thumb = $postRequest->file('thumb');
+          
+            $path = 'upload';
+               $fileName = time()."-".$thumb->getClientOriginalName();
+               
+               $thumb->move($path , $fileName); 
+               $thumb = $path."/".$fileName;
         }
-        $postId = $this->post->save($postRequest , $store);
+        $postId = $this->post->save($postRequest , $thumb);
   		if($postId){
   			return redirect()->route('post.show',$postId);
   		}else{

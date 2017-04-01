@@ -51,7 +51,7 @@
   <div class="row title" style="margin-top:30px;">
     <div class="col-xs-12 col-sm-2">
       @if($post->thumb !=null)
-        <img src="{{ asset('storage/'.$post->thumb)}}">
+        <img src="{{ asset($post->thumb)}}">
       @else
         <img src="{{ asset('default.jpg') }}">
       @endif
